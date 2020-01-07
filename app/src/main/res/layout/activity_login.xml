@@ -142,15 +142,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/passwordInput" />
 
-        <FrameLayout
-            android:id="@+id/registerFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible"
-            tools:visibility="invisible">
 
-        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/registerFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        tools:layout_editor_absoluteX="-1dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:visibility="invisible">
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
