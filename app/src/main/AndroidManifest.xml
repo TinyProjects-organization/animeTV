@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.NoActionBar">
         <activity android:name=".Login.ForgotPasswordActivity"></activity>
-        <activity android:name=".Homescreen.homescreen" />
+        <activity android:name=".Homescreen.HomeScreen" />
         <activity android:name=".Login.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
