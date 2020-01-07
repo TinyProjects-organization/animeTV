@@ -31,15 +31,14 @@ class Login : AppCompatActivity() {
 
 
             /* Login sayfasındaki show password kısmı */
-            showHideBtn.setOnClickListener {
-                if(showHideBtn.text.toString().equals("Show")){
+            showHidePassCheck.setOnClickListener {
+                if(showHidePassCheck.isChecked){
                     passwordInput.transformationMethod = HideReturnsTransformationMethod.getInstance()
-                    showHideBtn.text = "Hide"
-                } else{
-                    passwordInput.transformationMethod = PasswordTransformationMethod.getInstance()
-                    showHideBtn.text = "Show"
                 }
-        }
+                else{
+                    passwordInput.transformationMethod = PasswordTransformationMethod.getInstance()
+                }
+            }
 
             /* Login den forgot password sayfasona geçiş INTENT */
             forgotPasswordTextView.setOnClickListener{

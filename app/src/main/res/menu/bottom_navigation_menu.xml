@@ -3,11 +3,7 @@
 
 
     /* buraya navigation özelleri eklenicek */
-<item
-    android:id=""
-    android:icon="@color/cardview_dark_background"
-    android:title="">
-</item>
+
 
 
 
