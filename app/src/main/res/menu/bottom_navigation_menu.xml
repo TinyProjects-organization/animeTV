@@ -3,7 +3,37 @@
 
 
     /* buraya navigation özelleri eklenicek */
+    <item
+        android:id="@+id/listicon"
+        android:icon="@drawable/ic_view_list_black_48dp"
+        android:title=""
+        >
 
+    </item>
+
+    <item
+        android:id="@+id/playicon"
+        android:icon="@drawable/ic_play_arrow_black_48dp"
+        android:title=""
+        >
+
+    </item>
+
+    <item
+        android:id="@+id/profileicon"
+        android:icon="@drawable/ic_person_black_48dp"
+        android:title=""
+        >
+
+    </item>
+
+    <item
+        android:id="@+id/chaticon"
+        android:icon="@drawable/ic_chat_black_48dp"
+        android:title=""
+        >
+
+    </item>
 
 
 

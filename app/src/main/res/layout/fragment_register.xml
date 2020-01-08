@@ -92,8 +92,7 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="24dp"
             android:text="Do you have an account ?"
             android:textColor="#ffffff"
             android:textSize="20dp"
@@ -105,13 +104,14 @@
             android:id="@+id/backtologin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:text="Login"
             android:textColor="#F1E02D"
             android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView2"
-            app:layout_constraintStart_toEndOf="@+id/textView2"
-            app:layout_constraintTop_toTopOf="@+id/textView2" />
+            tools:layout_editor_absoluteX="329dp"
+            tools:layout_editor_absoluteY="680dp" />
+            />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
