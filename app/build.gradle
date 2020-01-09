@@ -45,4 +45,8 @@ dependencies {
     implementation 'com.github.ittianyu:BottomNavigationViewEx:2.0.4'
     implementation "com.android.support:design:29.0.0"
     // https://github.com/ittianyu/BottomNavigationViewEx dan bottom navigation view  son //
+
+    // https://github.com/greenrobot/EventBus dan veri aktarımı //
+    implementation 'org.greenrobot:eventbus:3.1.1'
+    // https://github.com/greenrobot/EventBus dan veri aktarımı  son //
 }

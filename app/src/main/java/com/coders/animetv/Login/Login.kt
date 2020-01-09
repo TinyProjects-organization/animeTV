@@ -21,15 +21,6 @@ class Login : AppCompatActivity() {
 
         private fun init(){
 
-         /*    /* Login sayfasın dan register sayfasına geçiş kısmı TRANSACTION*/
-            registerlink.setOnClickListener {
-                var transaction = supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.registerFragment,RegisterFragment())
-                transaction.addToBackStack("register page")
-                transaction.commit()
-            }
-
-          */
 
             /* Login den register sayfasona geçiş INTENT */
             createAnAccount.setOnClickListener{

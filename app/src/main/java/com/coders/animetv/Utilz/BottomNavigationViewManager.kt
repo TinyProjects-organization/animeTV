@@ -28,23 +28,23 @@ class BottomNavigationViewManager {
                     // herhangi birine tıklandığında açılacak sayfa //
                   when(menuItem.itemId){
                       com.coders.animetv.R.id.listicon -> {
-                          val intent = Intent(context, List::class.java)
+                          val intent = Intent(context, List::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                           context.startActivity(intent)
                           return true
                       }
                       com.coders.animetv.R.id.homeicon -> {
-                          val intent = Intent(context, HomeScreen::class.java)
+                          val intent = Intent(context, HomeScreen::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                           context.startActivity(intent)
                           return true
                       }
                       com.coders.animetv.R.id.profileicon -> {
-                          val intent = Intent(context, Profile::class.java)
+                          val intent = Intent(context, Profile::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                           context.startActivity(intent)
                           return true
                       }
                       com.coders.animetv.R.id.chaticon -> {
                           //intent oluşturuyoruz intentin içeriği profile activitye gidiyor//
-                          val intent = Intent(context, Chat::class.java)
+                          val intent = Intent(context, Chat::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                           context.startActivity(intent)
                           return true
                       }
