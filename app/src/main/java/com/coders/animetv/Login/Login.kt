@@ -21,7 +21,7 @@ class Login : AppCompatActivity() {
 
         private fun init(){
 
-            /* Login sayfasın dan register sayfasına geçiş kısmı TRANSACTION*/
+         /*    /* Login sayfasın dan register sayfasına geçiş kısmı TRANSACTION*/
             registerlink.setOnClickListener {
                 var transaction = supportFragmentManager.beginTransaction()
                 transaction.replace(R.id.registerFragment,RegisterFragment())
@@ -29,6 +29,13 @@ class Login : AppCompatActivity() {
                 transaction.commit()
             }
 
+          */
+
+            /* Login den register sayfasona geçiş INTENT */
+            createAnAccount.setOnClickListener{
+                val intent = Intent(this, Register::class.java)
+                startActivity(intent)
+            }
 
             /* Login sayfasındaki show password kısmı */
             showHidePassCheck.setOnClickListener {
