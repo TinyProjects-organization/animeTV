@@ -27,6 +27,7 @@ class BottomNavigationViewManager {
                       com.coders.animetv.R.id.listicon -> {}
                       com.coders.animetv.R.id.chaticon -> {}
                       com.coders.animetv.R.id.playicon -> {}
+                      com.coders.animetv.R.id.homeicon -> {}
                       com.coders.animetv.R.id.profileicon -> {
                           //intent oluşturuyoruz intentin içeriği profile activitye gidiyor//
                           val intent = Intent(context, Profile::class.java)

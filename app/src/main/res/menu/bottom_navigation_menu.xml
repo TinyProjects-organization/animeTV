@@ -20,6 +20,14 @@
     </item>
 
     <item
+        android:id="@+id/homeicon"
+        android:icon="@drawable/ic_home_black_48dp"
+        android:title=""
+        >
+
+    </item>
+
+    <item
         android:id="@+id/profileicon"
         android:icon="@drawable/ic_person_black_48dp"
         android:title=""
