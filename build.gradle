@@ -19,7 +19,10 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
+        // https://github.com/ittianyu/BottomNavigationViewEx dan bottom navigation view //
+        maven { url "https://jitpack.io" }
+        maven { url "https://maven.google.com" }
+        // https://github.com/ittianyu/BottomNavigationViewEx dan bottom navigation view son //
     }
 }
 
