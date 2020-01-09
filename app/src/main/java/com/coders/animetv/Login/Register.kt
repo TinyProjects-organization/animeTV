@@ -5,8 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.view.View
 import com.coders.animetv.R
+import com.coders.animetv.Utilz.EventBusData
+import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.activity_register.*
+import org.greenrobot.eventbus.EventBus
 
 class Register : AppCompatActivity() {
 
@@ -37,10 +41,27 @@ class Register : AppCompatActivity() {
         }
         /* Register sayfasındaki show password kısmı son */
 
+        //Register sayfasından email kodu kontrol sayfasına gider //
+        registerBtn.setOnClickListener{
+            RegisterPageRoot.visibility = View.GONE
+            RegisterPageContainer.visibility = View.VISIBLE
+            var transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.RegisterPageContainer,EMailKodragment())
+            transaction.commit()
 
+            //event bus ile girilen emaili alıp fragmente gönderme //
+            EventBus.getDefault().postSticky(EventBusData.EMailGonder(eMailInputRegister.text.toString()))
+        }
 
+        //Register sayfasından email kodu kontrol sayfasına gider son //
 
 
     }
-
+    //geri tuşuna basılınca geri gideni geri getirir //
+    override fun onBackPressed() {
+        RegisterPageRoot.visibility = View.VISIBLE
+        RegisterPageContainer.visibility = View.INVISIBLE
+        super.onBackPressed()
+    }
+    //geri tuşuna basılınca geri gideni geri getirir  son//
 }
