@@ -1,9 +1,9 @@
 apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
-
+apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android-extensions'
-
+apply plugin: 'com.google.gms.google-services'
 android {
     compileSdkVersion 29
     buildToolsVersion '29.0.2'
@@ -22,6 +22,7 @@ android {
         }
     }
 }
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -49,4 +50,10 @@ dependencies {
     // https://github.com/greenrobot/EventBus dan veri aktarımı //
     implementation 'org.greenrobot:eventbus:3.1.1'
     // https://github.com/greenrobot/EventBus dan veri aktarımı  son //
+
+
+
+    //Firebase ////
+    implementation 'com.google.firebase:firebase-analytics:17.2.0'
+    //Firebase son ////
 }

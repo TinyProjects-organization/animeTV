@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "830209356666",
+    "firebase_url": "https://animetv-86f75.firebaseio.com",
+    "project_id": "animetv-86f75",
+    "storage_bucket": "animetv-86f75.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:830209356666:android:947a9dc48c1fd2d2d31cc3",
+        "android_client_info": {
+          "package_name": "com.coders.animetv"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "830209356666-f4e37mqu0mcete3279gde241jldqnl67.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.coders.animetv",
+            "certificate_hash": "ed0a7dd5bb9f8d095e5f6cc8ecba89a613c9e2a3"
+          }
+        },
+        {
+          "client_id": "830209356666-cj8a90q7ul54b2oqldum40d2261dbmak.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGrtDxsLinChZ5UlQMWahf3BGAuyf-COY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "830209356666-cj8a90q7ul54b2oqldum40d2261dbmak.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

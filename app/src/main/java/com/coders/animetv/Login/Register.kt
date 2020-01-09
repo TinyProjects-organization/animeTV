@@ -8,7 +8,6 @@ import android.text.method.PasswordTransformationMethod
 import android.view.View
 import com.coders.animetv.R
 import com.coders.animetv.Utilz.EventBusData
-import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.activity_register.*
 import org.greenrobot.eventbus.EventBus
 
@@ -58,7 +57,7 @@ class Register : AppCompatActivity() {
 
 
     }
-
+    //geri tuşuna basılınca geri gideni geri getirir     //
     override fun onBackPressed() {
         RegisterPageRoot.visibility=View.VISIBLE
         super.onBackPressed()
