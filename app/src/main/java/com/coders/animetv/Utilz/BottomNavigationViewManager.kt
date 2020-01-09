@@ -3,6 +3,9 @@ package com.coders.animetv.Utilz
 import android.content.Context
 import android.content.Intent
 import android.view.MenuItem
+import com.coders.animetv.Chat.Chat
+import com.coders.animetv.Homescreen.HomeScreen
+import com.coders.animetv.List.List
 import com.coders.animetv.Profile.Profile
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
@@ -24,13 +27,24 @@ class BottomNavigationViewManager {
                 override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
                     // herhangi birine tıklandığında açılacak sayfa //
                   when(menuItem.itemId){
-                      com.coders.animetv.R.id.listicon -> {}
-                      com.coders.animetv.R.id.chaticon -> {}
-                      com.coders.animetv.R.id.playicon -> {}
-                      com.coders.animetv.R.id.homeicon -> {}
+                      com.coders.animetv.R.id.listicon -> {
+                          val intent = Intent(context, List::class.java)
+                          context.startActivity(intent)
+                          return true
+                      }
+                      com.coders.animetv.R.id.homeicon -> {
+                          val intent = Intent(context, HomeScreen::class.java)
+                          context.startActivity(intent)
+                          return true
+                      }
                       com.coders.animetv.R.id.profileicon -> {
-                          //intent oluşturuyoruz intentin içeriği profile activitye gidiyor//
                           val intent = Intent(context, Profile::class.java)
+                          context.startActivity(intent)
+                          return true
+                      }
+                      com.coders.animetv.R.id.chaticon -> {
+                          //intent oluşturuyoruz intentin içeriği profile activitye gidiyor//
+                          val intent = Intent(context, Chat::class.java)
                           context.startActivity(intent)
                           return true
                       }

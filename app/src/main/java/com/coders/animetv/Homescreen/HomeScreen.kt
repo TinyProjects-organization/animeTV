@@ -10,8 +10,9 @@ import kotlinx.android.synthetic.main.activity_homescreen.*
 
 class HomeScreen : AppCompatActivity() {
         // hangisinde olduğunu göstermek için //
-             private val  ACTIVITY_NUMBER = 0
+             private val  ACTIVITY_NUMBER = 1
             private val TAG = "Home Activity"
+    // hangisinde olduğunu göstermek için son//
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,6 +20,8 @@ class HomeScreen : AppCompatActivity() {
         setupNavigationView()
     }
 
+
+    // bottom navigation view çalıştırma fonksiyonu //
     fun setupNavigationView() {
         BottomNavigationViewManager.setupBottomNavigationView(bottomNavigationView)
         BottomNavigationViewManager.setupNavigation(this,bottomNavigationView)
@@ -26,4 +29,5 @@ class HomeScreen : AppCompatActivity() {
         var menuItem = menu.getItem(ACTIVITY_NUMBER)
         menuItem.setChecked(true)
     }
+    // bottom navigation view çalıştırma fonksiyonu sonu//
 }
