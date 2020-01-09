@@ -12,6 +12,8 @@ import android.view.ViewGroup
 
 import com.coders.animetv.R
 import com.coders.animetv.Utilz.EventBusData
+import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.fragment_email_kodragment.view.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 
@@ -23,7 +25,10 @@ class EMailKodragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_email_kodragment, container, false)
+        val view = inflater.inflate(R.layout.fragment_email_kodragment, container, false)
+
+
+        return view
     }
 
     // gelen e maili sonraki sayfada alma //

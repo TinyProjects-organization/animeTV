@@ -47,6 +47,7 @@ class Register : AppCompatActivity() {
             RegisterPageContainer.visibility = View.VISIBLE
             var transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.RegisterPageContainer,EMailKodragment())
+            transaction.addToBackStack(null)
             transaction.commit()
 
             //event bus ile girilen emaili alıp fragmente gönderme //
@@ -57,10 +58,9 @@ class Register : AppCompatActivity() {
 
 
     }
-    //geri tuşuna basılınca geri gideni geri getirir //
+
     override fun onBackPressed() {
-        RegisterPageRoot.visibility = View.VISIBLE
-        RegisterPageContainer.visibility = View.INVISIBLE
+        RegisterPageRoot.visibility=View.VISIBLE
         super.onBackPressed()
     }
     //geri tuşuna basılınca geri gideni geri getirir  son//
