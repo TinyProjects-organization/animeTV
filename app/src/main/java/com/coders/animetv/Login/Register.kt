@@ -102,11 +102,12 @@ class Register : AppCompatActivity() {
                     toast.show()
 
                 }else{
+                    //buraya girilmsine rağmen tamamını karşılamayınca yapılıcaklar
 
             }
 
             }else{
-
+                //buraya hiçbirşey girilmediğinde yapılıcaklar
             }
         }
     }
