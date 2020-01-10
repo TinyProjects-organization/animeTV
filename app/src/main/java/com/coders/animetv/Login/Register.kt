@@ -2,7 +2,6 @@ package com.coders.animetv.Login
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -24,6 +23,7 @@ class Register : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
         init()
+
     }
 
     private fun init() {
@@ -47,7 +47,7 @@ class Register : AppCompatActivity() {
         }
         //Register sayfasındaki show password kısmı son //
 
-        /*
+    /*
         ///Register sayfasından email kodu kontrol sayfasına gider //
         registerBtn.setOnClickListener{
             RegisterPageRoot.visibility = View.GONE
@@ -61,17 +61,37 @@ class Register : AppCompatActivity() {
         }
 
         //Register sayfasından email kodu kontrol sayfasına gider son //
-           */
+*/
 
         // girelen veriyi takip edip belli kurala göre onaylama //
-        userNameInputRegister.addTextChangedListener(watcher)
-        passwordInputRegister.addTextChangedListener(watcher)
-        eMailInputRegister.addTextChangedListener(watcher)
+
+
+
         // girelen veriyi takip edip belli kurala göre onaylama son//
+
+
+            userNameInputRegister?.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    tvSample.setText("test :"+s)
+                }
+            })
     }
 
 
-   /*
+    /*
    // geri tuşuna basılınca geri gideni geri getirir     //
     override fun onBackPressed() {
         RegisterPageRoot.visibility=View.VISIBLE
@@ -80,35 +100,4 @@ class Register : AppCompatActivity() {
     //geri tuşuna basılınca geri gideni geri getirir  son//
     */
 
-    // girelen veriyi takip edip belli kurala göre onaylama  watcher kodu//
-        var watcher : TextWatcher = object : TextWatcher{
-            override fun afterTextChanged(s: Editable?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(s!!.length > 5 ){
-                    if(userNameInputRegister.text.toString().length > 5
-                        && eMailInputRegister.text.toString().length>5
-                        && passwordInputRegister.text.toString().length>5){
-                        val toast = Toast.makeText(applicationContext, "Hello çalisti", Toast.LENGTH_SHORT)
-                        toast.show()
-                    }else{
-                        val toast = Toast.makeText(applicationContext, "Hello çalışmadı", Toast.LENGTH_SHORT)
-                        toast.show()
-                    }
-
-                }else{
-                    registerBtn.isEnabled=false
-                    registerBtn.setBackgroundColor(Color.parseColor("#9b111"))
-                }
-
-            }
-
-        }
-    // girelen veriyi takip edip belli kurala göre onaylama  watcher kodu sonu//
 }
