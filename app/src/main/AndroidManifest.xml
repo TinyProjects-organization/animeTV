@@ -11,10 +11,6 @@
         android:theme="@style/Theme.Design.NoActionBar">
         <activity android:name=".Login.Register"></activity>
         <activity android:name=".List.List" />
-        <activity
-            android:name=".List.list"
-            android:label="@string/title_activity_list"
-            android:theme="@style/NoActionBar" />
         <activity android:name=".Chat.Chat" />
         <activity android:name=".Profile.Profile" />
         <activity android:name=".Login.ForgotPasswordActivity" />
