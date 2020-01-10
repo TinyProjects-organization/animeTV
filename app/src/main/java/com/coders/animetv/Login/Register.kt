@@ -10,6 +10,7 @@ import android.text.TextWatcher
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.coders.animetv.R
 import com.coders.animetv.Utilz.EventBusData
@@ -23,9 +24,6 @@ class Register : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
         init()
-        userNameInputRegister.addTextChangedListener(watcher)
-        passwordInputRegister.addTextChangedListener(watcher)
-        eMailInputRegister.addTextChangedListener(watcher)
     }
 
     private fun init() {
@@ -66,7 +64,9 @@ class Register : AppCompatActivity() {
            */
 
         // girelen veriyi takip edip belli kurala göre onaylama //
-
+        userNameInputRegister.addTextChangedListener(watcher)
+        passwordInputRegister.addTextChangedListener(watcher)
+        eMailInputRegister.addTextChangedListener(watcher)
         // girelen veriyi takip edip belli kurala göre onaylama son//
     }
 
@@ -90,22 +90,24 @@ class Register : AppCompatActivity() {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) =
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if(s!!.length > 5 ){
                     if(userNameInputRegister.text.toString().length > 5
-                        && passwordInputRegister.text.toString().length>5
-                        && eMailInputRegister.text.toString().length>5){
-                        registerBtn.isEnabled=true
-
-                    }else
-
-                        registerBtn.isEnabled=false
-
+                        && eMailInputRegister.text.toString().length>5
+                        && passwordInputRegister.text.toString().length>5){
+                        val toast = Toast.makeText(applicationContext, "Hello çalisti", Toast.LENGTH_SHORT)
+                        toast.show()
+                    }else{
+                        val toast = Toast.makeText(applicationContext, "Hello çalışmadı", Toast.LENGTH_SHORT)
+                        toast.show()
+                    }
 
                 }else{
                     registerBtn.isEnabled=false
-
+                    registerBtn.setBackgroundColor(Color.parseColor("#9b111"))
                 }
+
+            }
 
         }
     // girelen veriyi takip edip belli kurala göre onaylama  watcher kodu sonu//
