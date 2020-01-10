@@ -30,7 +30,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textInputEditText"
+            android:id="@+id/userNameInputRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -61,7 +61,7 @@
             android:textColorLink="#F44336"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textInputEditText" />
+            app:layout_constraintTop_toBottomOf="@+id/userNameInputRegister" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/passwordInputRegister"
@@ -89,6 +89,7 @@
             android:background="@drawable/bg_button_white"
             android:rotationX="10"
             android:text="Register"
+            android:enabled="false"
             android:textColor="#ffffff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"

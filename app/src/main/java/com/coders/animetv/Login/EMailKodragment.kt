@@ -20,13 +20,16 @@ import org.greenrobot.eventbus.Subscribe
 
 class EMailKodragment : Fragment() {
 
+    var email = ""
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_email_kodragment, container, false)
-
+        // kullanıcıdan girilen e maili yazar //
+        view.userEmailAdress.setText(email)
 
         return view
     }
@@ -34,7 +37,7 @@ class EMailKodragment : Fragment() {
     // gelen e maili sonraki sayfada alma //
     @Subscribe (sticky = true)
     internal fun eMailEvent(emailkodu : EventBusData.EMailGonder){
-        var email = emailkodu.email
+         email = emailkodu.email
         Log.e("Can","email"+email)
 
     }
