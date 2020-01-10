@@ -64,30 +64,13 @@ class Register : AppCompatActivity() {
 */
 
         // girelen veriyi takip edip belli kurala göre onaylama //
-
-
-
+            eMailInputRegister.addTextChangedListener(watcher)
+            userNameInputRegister.addTextChangedListener(watcher)
+            passwordInputRegister.addTextChangedListener(watcher)
         // girelen veriyi takip edip belli kurala göre onaylama son//
 
 
-            userNameInputRegister?.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable?) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                }
 
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                }
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    tvSample.setText("test :"+s)
-                }
-            })
     }
 
 
@@ -100,4 +83,32 @@ class Register : AppCompatActivity() {
     //geri tuşuna basılınca geri gideni geri getirir  son//
     */
 
+    //Girelen input kontrol panali //
+    val watcher : TextWatcher = object : TextWatcher{
+        override fun afterTextChanged(s: Editable?) {
+
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            if (s!!.length>5){
+                if(passwordInputRegister.text.toString().length>5
+                    && userNameInputRegister.text.toString().length>5
+                    && eMailInputRegister.text.toString().length>5 ){
+                    val toast = Toast.makeText(applicationContext, "Egemen Ye beni", Toast.LENGTH_LONG)
+                    toast.show()
+
+                }else{
+
+            }
+
+            }else{
+
+            }
+        }
+    }
+    //Girelen input kontrol panali son//
 }
