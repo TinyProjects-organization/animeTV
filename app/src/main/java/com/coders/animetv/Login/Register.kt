@@ -2,6 +2,8 @@ package com.coders.animetv.Login
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -15,6 +17,7 @@ import com.coders.animetv.R
 import com.coders.animetv.Utilz.EventBusData
 import kotlinx.android.synthetic.main.activity_register.*
 import org.greenrobot.eventbus.EventBus
+import java.io.File
 import java.security.AccessController.getContext
 
 class Register : AppCompatActivity() {
@@ -47,7 +50,7 @@ class Register : AppCompatActivity() {
         }
         //Register sayfasındaki show password kısmı son //
 
-    /*
+
         ///Register sayfasından email kodu kontrol sayfasına gider //
         registerBtn.setOnClickListener{
             RegisterPageRoot.visibility = View.GONE
@@ -61,7 +64,7 @@ class Register : AppCompatActivity() {
         }
 
         //Register sayfasından email kodu kontrol sayfasına gider son //
-*/
+
 
         // girelen veriyi takip edip belli kurala göre onaylama //
             eMailInputRegister.addTextChangedListener(watcher)
@@ -74,14 +77,14 @@ class Register : AppCompatActivity() {
     }
 
 
-    /*
+
    // geri tuşuna basılınca geri gideni geri getirir     //
     override fun onBackPressed() {
         RegisterPageRoot.visibility=View.VISIBLE
         super.onBackPressed()
     }
     //geri tuşuna basılınca geri gideni geri getirir  son//
-    */
+
 
     //Girelen input kontrol panali //
     val watcher : TextWatcher = object : TextWatcher{
@@ -90,25 +93,34 @@ class Register : AppCompatActivity() {
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            if (s?.length==0){
+                registerBtn.setBackgroundResource(R.drawable.bg_button_empty)}
+            }
 
-        }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            if (s!!.length>5){
+            if (s!!.length>=1){
                 if(passwordInputRegister.text.toString().length>5
                     && userNameInputRegister.text.toString().length>5
                     && eMailInputRegister.text.toString().length>5 ){
-                    val toast = Toast.makeText(applicationContext, "Egemen Ye beni", Toast.LENGTH_LONG)
-                    toast.show()
+                    registerBtn.setBackgroundResource(R.drawable.bg_button_success)
+                    registerBtn.setTextColor(Color.rgb(56,211,58))
+                    registerBtn.isEnabled=true
 
-                }else{
+                }else {
                     //buraya girilmsine rağmen tamamını karşılamayınca yapılıcaklar
-
+                    registerBtn.setBackgroundResource(R.drawable.bg_button_fail)
+                    registerBtn.setTextColor(Color.rgb(245,57,57))
+                    registerBtn.isEnabled=false
             }
 
-            }else{
-                //buraya hiçbirşey girilmediğinde yapılıcaklar
-            }
+        }else{
+            //buraya hiçbirşey girilmediğinde yapılıcaklar
+            registerBtn.setBackgroundResource(R.drawable.bg_button_empty)
+                registerBtn.setTextColor(Color.WHITE)
+                registerBtn.isEnabled=false
+
+        }
         }
     }
     //Girelen input kontrol panali son//
