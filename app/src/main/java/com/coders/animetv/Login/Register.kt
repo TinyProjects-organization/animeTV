@@ -15,6 +15,13 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.coders.animetv.R
 import com.coders.animetv.Utilz.EventBusData
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.EmailAuthProvider
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_register.*
 import org.greenrobot.eventbus.EventBus
 import java.io.File
@@ -22,10 +29,20 @@ import java.security.AccessController.getContext
 
 class Register : AppCompatActivity() {
 
+    // firebase kısmı
+   lateinit var mAuth : FirebaseAuth
+    lateinit var mRef : DatabaseReference
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
         init()
+        register()
+
+        // firebase kayıt kısmı //
+        mAuth = FirebaseAuth.getInstance()
+        mRef = FirebaseDatabase.getInstance().reference
+        // firebase kayıt kısmı son //
 
     }
 
@@ -72,7 +89,7 @@ class Register : AppCompatActivity() {
             passwordInputRegister.addTextChangedListener(watcher)
         // girelen veriyi takip edip belli kurala göre onaylama son//
 
-
+        //auth kısmına veri ekleme firebase //
 
     }
 
@@ -124,4 +141,27 @@ class Register : AppCompatActivity() {
         }
     }
     //Girelen input kontrol panali son//
+
+fun register() {
+    registerBtn.setOnClickListener {
+        mAuth.createUserWithEmailAndPassword(
+            passwordInputRegister.text.toString()
+            , eMailInputRegister.text.toString()
+        ).addOnCompleteListener(object : OnCompleteListener<AuthResult> {
+            override fun onComplete(p0: Task<AuthResult>) {
+                if (p0!!.isComplete) {
+                    val toast =
+                        Toast.makeText(applicationContext, "kayıt basarili", Toast.LENGTH_LONG)
+                    toast.show()
+                } else {
+                    val toast =
+                        Toast.makeText(applicationContext, "kayit olmadi", Toast.LENGTH_LONG)
+                    toast.show()
+                }
+            }
+        })
+
+    }
+}
+    //auth kısmına veri ekleme firebase son //
 }
