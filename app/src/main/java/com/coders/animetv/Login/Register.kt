@@ -3,7 +3,6 @@ package com.coders.animetv.Login
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -12,20 +11,11 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import com.coders.animetv.R
-import com.coders.animetv.Utilz.EventBusData
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_register.*
-import org.greenrobot.eventbus.EventBus
-import java.io.File
-import java.security.AccessController.getContext
 
 class Register : AppCompatActivity() {
 
@@ -38,6 +28,7 @@ class Register : AppCompatActivity() {
         setContentView(R.layout.activity_register)
         init()
         register()
+
 
         // firebase kayıt kısmı //
         mAuth = FirebaseAuth.getInstance()
@@ -67,7 +58,7 @@ class Register : AppCompatActivity() {
         }
         //Register sayfasındaki show password kısmı son //
 
-
+/*
         ///Register sayfasından email kodu kontrol sayfasına gider //
         registerBtn.setOnClickListener{
             RegisterPageRoot.visibility = View.GONE
@@ -79,6 +70,8 @@ class Register : AppCompatActivity() {
               //event bus ile girilen emaili alıp fragmente gönderme //
             EventBus.getDefault().postSticky(EventBusData.EMailGonder(eMailInputRegister.text.toString()))
         }
+
+ */
 
         //Register sayfasından email kodu kontrol sayfasına gider son //
 
@@ -144,22 +137,19 @@ class Register : AppCompatActivity() {
 
 fun register() {
     registerBtn.setOnClickListener {
-        mAuth.createUserWithEmailAndPassword(
-            passwordInputRegister.text.toString()
-            , eMailInputRegister.text.toString()
-        ).addOnCompleteListener(object : OnCompleteListener<AuthResult> {
-            override fun onComplete(p0: Task<AuthResult>) {
-                if (p0!!.isComplete) {
-                    val toast =
-                        Toast.makeText(applicationContext, "kayıt basarili", Toast.LENGTH_LONG)
-                    toast.show()
-                } else {
-                    val toast =
-                        Toast.makeText(applicationContext, "kayit olmadi", Toast.LENGTH_LONG)
-                    toast.show()
-                }
+        var email = eMailInputRegister.text.toString()
+        var password = passwordInputRegister.text.toString()
+        mAuth.createUserWithEmailAndPassword(email , password).addOnCompleteListener { p0 ->
+            if (p0.isComplete) {
+                val toast =
+                    Toast.makeText(applicationContext, "kayıt basarili", Toast.LENGTH_LONG)
+                toast.show()
+            } else {
+                val toast =
+                    Toast.makeText(applicationContext, "kayit olmadi", Toast.LENGTH_LONG)
+                toast.show()
             }
-        })
+        }
 
     }
 }
