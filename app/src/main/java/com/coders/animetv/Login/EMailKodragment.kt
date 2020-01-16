@@ -42,10 +42,10 @@ class EMailKodragment : Fragment() {
     }
 
     // gelen e maili sonraki sayfada alma //
-    @Subscribe (sticky = true)
-    internal fun eMailEvent(emailkodu : EventBusData.EMailGonder){
-         email = emailkodu.email
-        Log.e("Can","email"+email)
+    @Subscribe(sticky = true)
+    internal fun eMailEvent(emailkodu: EventBusData.EMailGonder) {
+        email = emailkodu.email
+        Log.e("Can", "email" + email)
 
     }
 
@@ -58,8 +58,9 @@ class EMailKodragment : Fragment() {
         super.onDetach()
         EventBus.getDefault().unregister(this)
     }
+
     // gelen e maili sonraki sayfada alma son//
-    val watcher : TextWatcher = object : TextWatcher {
+    val watcher: TextWatcher = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
             TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
@@ -69,12 +70,20 @@ class EMailKodragment : Fragment() {
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            if(s!!.length>5){
-                if(activationCode.text.toString().length>5){
-                    val toast = Toast.makeText(activity?.applicationContext, "Hello çalisti", Toast.LENGTH_SHORT)
+            if (s!!.length > 5) {
+                if (activationCode.text.toString().length > 5) {
+                    val toast = Toast.makeText(
+                        activity?.applicationContext,
+                        "Hello çalisti",
+                        Toast.LENGTH_SHORT
+                    )
                     toast.show()
-                }else{
-                    val toast = Toast.makeText(activity?.applicationContext, "Hello çalisti", Toast.LENGTH_SHORT)
+                } else {
+                    val toast = Toast.makeText(
+                        activity?.applicationContext,
+                        "Hello çalisti",
+                        Toast.LENGTH_SHORT
+                    )
                     toast.show()
                 }
             }

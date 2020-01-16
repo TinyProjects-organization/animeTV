@@ -19,39 +19,37 @@ class Login : AppCompatActivity() {
         init()
     }
 
-        private fun init(){
+    private fun init() {
 
 
-            /* Login den register sayfasona geçiş INTENT */
-            createAnAccount.setOnClickListener{
-                val intent = Intent(this, Register::class.java)
-                startActivity(intent)
+        /* Login den register sayfasona geçiş INTENT */
+        createAnAccount.setOnClickListener {
+            val intent = Intent(this, Register::class.java)
+            startActivity(intent)
+        }
+
+        /* Login sayfasındaki show password kısmı */
+        showHidePassCheck.setOnClickListener {
+            if (showHidePassCheck.isChecked) {
+                passwordInput.transformationMethod = HideReturnsTransformationMethod.getInstance()
+            } else {
+                passwordInput.transformationMethod = PasswordTransformationMethod.getInstance()
             }
+        }
 
-            /* Login sayfasındaki show password kısmı */
-            showHidePassCheck.setOnClickListener {
-                if(showHidePassCheck.isChecked){
-                    passwordInput.transformationMethod = HideReturnsTransformationMethod.getInstance()
-                }
-                else{
-                    passwordInput.transformationMethod = PasswordTransformationMethod.getInstance()
-                }
-            }
+        /* Login den forgot password sayfasona geçiş INTENT */
+        forgotPasswordTextView.setOnClickListener {
+            val intent = Intent(this, ForgotPasswordActivity::class.java)
+            startActivity(intent)
+        }
 
-            /* Login den forgot password sayfasona geçiş INTENT */
-            forgotPasswordTextView.setOnClickListener{
-                val intent = Intent(this, ForgotPasswordActivity::class.java)
-                startActivity(intent)
-            }
-
-            /*GEÇİCİ OLARAK HOMESCREENE GİDEN İNTENT  */
-            btn_signin.setOnClickListener{
-                val intent = Intent(this, HomeScreen::class.java)
-                startActivity(intent)
-            }
+        /*GEÇİCİ OLARAK HOMESCREENE GİDEN İNTENT  */
+        btn_signin.setOnClickListener {
+            val intent = Intent(this, HomeScreen::class.java)
+            startActivity(intent)
+        }
 
     }
-
 
 
 }

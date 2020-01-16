@@ -43,7 +43,6 @@ class BottomNavigationViewManager {
                           return true
                       }
                       com.coders.animetv.R.id.chaticon -> {
-                          //intent oluşturuyoruz intentin içeriği profile activitye gidiyor//
                           val intent = Intent(context, Chat::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                           context.startActivity(intent)
                           return true

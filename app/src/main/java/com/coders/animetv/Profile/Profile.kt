@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.activity_profile.*
 
 class Profile : AppCompatActivity() {
     // hangisinde olduğunu göstermek için //
-    private val  ACTIVITY_NUMBER = 2
+    private val ACTIVITY_NUMBER = 2
     private val TAG = "Profile Activity"
     // hangisinde olduğunu göstermek için son//
 
@@ -23,7 +23,7 @@ class Profile : AppCompatActivity() {
     // bottom navigation view çalıştırma fonksiyonu //
     fun setupNavigationView() {
         BottomNavigationViewManager.setupBottomNavigationView(bottomNavigationViewProfile)
-        BottomNavigationViewManager.setupNavigation(this,bottomNavigationViewProfile)
+        BottomNavigationViewManager.setupNavigation(this, bottomNavigationViewProfile)
         var menu = bottomNavigationViewProfile.menu
         var menuItem = menu.getItem(ACTIVITY_NUMBER)
         menuItem.setChecked(true)

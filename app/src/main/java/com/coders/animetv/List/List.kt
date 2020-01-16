@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.activity_list.*
 class List : AppCompatActivity() {
 
     // hangisinde olduğunu göstermek için //
-    private val  ACTIVITY_NUMBER = 0
+    private val ACTIVITY_NUMBER = 0
     private val TAG = "List Activity"
     // hangisinde olduğunu göstermek için son//
 
@@ -20,11 +20,10 @@ class List : AppCompatActivity() {
     }
 
 
-
     // bottom navigation view çalıştırma fonksiyonu //
     fun setupNavigationView() {
         BottomNavigationViewManager.setupBottomNavigationView(bottomNavigationViewList)
-        BottomNavigationViewManager.setupNavigation(this,bottomNavigationViewList)
+        BottomNavigationViewManager.setupNavigation(this, bottomNavigationViewList)
         var menu = bottomNavigationViewList.menu
         var menuItem = menu.getItem(ACTIVITY_NUMBER)
         menuItem.setChecked(true)

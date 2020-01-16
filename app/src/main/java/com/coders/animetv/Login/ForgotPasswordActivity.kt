@@ -17,7 +17,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
     private fun init() {
 
         /* Forget pass sayfasından login sayfasına intent  */
-        forgetPassToLogin.setOnClickListener{
+        forgetPassToLogin.setOnClickListener {
             val intent = Intent(this, Login::class.java)
             startActivity(intent)
         }
