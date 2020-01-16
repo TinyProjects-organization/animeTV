@@ -15,8 +15,7 @@ import com.coders.animetv.Homescreen.HomeScreen
 import com.coders.animetv.Models.Users
 import com.coders.animetv.R
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_register.*
 import java.text.DateFormat
 import java.util.*
@@ -154,50 +153,113 @@ class Register : AppCompatActivity() {
             var email = eMailInputRegister.text.toString()
             var password = passwordInputRegister.text.toString()
             var user_nickname = userNameInputRegister.text.toString()
-            //Butona tıklanıldığı gibi görünür olup dönmeye başlar ///
-            progressBar.visibility = View.VISIBLE
+            // kontrol sonrası olur ise yapılacaklar için onay kodu
+            var createAble = false
 
-            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { p0 ->
-                if (p0.isComplete) {
-                    var user_id = mAuth.currentUser!!.uid
-                    //oturum açan kullanıcının verilerini DB ye kaydetme //
-                    var kaydedilicekKullanıcı =
-                        Users(email, password, user_nickname, user_id, currentTimeString)
-                    // DB oluşturma ağacı ////////
-                    mRef.child("users").child("typeC").child(user_id)
-                        .setValue(kaydedilicekKullanıcı)
-                        .addOnCompleteListener { reg ->
-                            if (reg.isSuccessful) {
-                                //eğer başarılı bir şekilde DB ye yazarsa ana ekrana geçsin
-                                val intent = Intent(this, HomeScreen::class.java)
-                                startActivity(intent)
+            // Firebase Veri çekip kontrol kısmı   //
+            mRef.child("users").child("typeC")
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError) {
 
-                            } else {
-                                //eğer kullanıcıyı DB ye yazarken sorun oluşursa kullanıcıyı silme kısmı //
-                                mAuth.currentUser!!.delete()
-                                    .addOnCompleteListener { p1 ->
-                                        if (p1.isSuccessful) {
-                                            //hata oluşur ise progress bar kaybolup toast msg yazıcak //
-                                            progressBar.visibility = View.INVISIBLE
-                                            Toast.makeText(
-                                                applicationContext,
-                                                "Bir hata oluştu,Lütfen tekrar deneyiniz",
-                                                Toast.LENGTH_LONG
-                                            ).show()
-                                        }
-                                    }
-                                //eğer kullanıcıyı DB ye yazarken sorun oluşursa kullanıcıyı silme kısmı son//
-
+                    }
+                    override fun onDataChange(p0: DataSnapshot) {
+                        //eğer snaphot yani DB anlık hali boş değilse
+                        if (p0.value != null) {
+                            for (user in p0.children) {
+                                var gelenKullanicilar = user.getValue(Users::class.java)
+                                //DB deki kayıtlı emailleri kontrol ediyor ki aynısı açılmasın
+                                if (gelenKullanicilar!!.user_email == eMailInputRegister.text.toString()) {
+                                    // Buraya email var ise yapılacaklar yazılacak  EGEMEN ALTAŞ//
+                                    Toast.makeText(
+                                        applicationContext,
+                                        "BU eposta zaten var",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                    //eğer hiçbiri yoksa true yapsın ////
+                                    createAble = true
+                                    break
+                                }
+                                // DB deki kullanıcıların nicklerini kontrol ediyor
+                                else if (gelenKullanicilar.user_nickname == userNameInputRegister.text.toString()) {
+                                    // Buraya username var ise yapılacaklar yazılacak  EGEMEN ALTAŞ//
+                                    Toast.makeText(
+                                        applicationContext,
+                                        "BU UserName zaten var",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                    //eğer hiçbiri yok uygun ise true yapsın //////
+                                    createAble = true
+                                    break
+                                }
                             }
                         }
-                    //oturum açan kullanıcının verilerini DB ye kaydetme son///
+                        // DB kontrolu sonucu uygun ise buraya Adım adım yeni veri yazma //
+                        if (createAble == false) {
+                            //Butona tıklanıldığı gibi görünür olup dönmeye başlar ///
+                            progressBar.visibility = View.VISIBLE
+                            //Butona tıklanıldığı gibi görünür olup dönmeye başlar SON///
+                            mAuth.createUserWithEmailAndPassword(email, password)
+                                .addOnCompleteListener { p0 ->
+                                    if (p0.isComplete) {
+                                        var user_id = mAuth.currentUser!!.uid
+                                        //oturum açan kullanıcının verilerini DB ye kaydetme //
+                                        var kaydedilicekKullanıcı =
+                                            Users(
+                                                email,
+                                                password,
+                                                user_nickname,
+                                                user_id,
+                                                currentTimeString
+                                            )
+                                        // DB oluşturma ağacı ////////
+                                        mRef.child("users").child("typeC").child(user_id)
+                                            .setValue(kaydedilicekKullanıcı)
+                                            .addOnCompleteListener { reg ->
+                                                if (reg.isSuccessful) {
+                                                    //eğer başarılı bir şekilde DB ye yazarsa ana ekrana geçsin
+                                                    val intent = Intent(
+                                                        applicationContext,
+                                                        HomeScreen::class.java
+                                                    )
+                                                    startActivity(intent)
+                                                    progressBar.visibility = View.INVISIBLE
+                                                } else {
+                                                    //eğer kullanıcıyı DB ye yazarken sorun oluşursa kullanıcıyı silme kısmı //
+                                                    mAuth.currentUser!!.delete()
+                                                        .addOnCompleteListener { p1 ->
+                                                            if (p1.isSuccessful) {
+                                                                //hata oluşur ise progress bar kaybolup toast msg yazıcak //
+                                                                progressBar.visibility =
+                                                                    View.INVISIBLE
+                                                                Toast.makeText(
+                                                                    applicationContext,
+                                                                    "Bir hata oluştu,Lütfen tekrar deneyiniz",
+                                                                    Toast.LENGTH_LONG
+                                                                ).show()
+                                                            }
+                                                        }
+                                                    //eğer kullanıcıyı DB ye yazarken sorun oluşursa kullanıcıyı silme kısmı son//
 
-                } else {
+                                                }
+                                            }
+                                        //oturum açan kullanıcının verilerini DB ye kaydetme son///
 
-                    Toast.makeText(applicationContext, "Problem oluştu", Toast.LENGTH_LONG).show()
+                                    } else {
+                                        progressBar.visibility = View.INVISIBLE
+                                        Toast.makeText(
+                                            applicationContext,
+                                            "Problem oluştu",
+                                            Toast.LENGTH_LONG
+                                        ).show()
 
-                }
-            }
+                                    }
+                                }
+
+                        }
+                        // DB kontrolu sonucu uygun ise buraya Adım adım yeni veri yazma SON //
+                    }
+                })
+            // Firebase Veri çekip kontrol kısmı  SON //
 
         }
     }
