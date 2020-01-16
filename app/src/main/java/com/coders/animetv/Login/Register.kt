@@ -23,7 +23,7 @@ import java.util.*
 
 class Register : AppCompatActivity() {
 
-    // firebase kısmı
+    // firebase kısmı tanımlama
     lateinit var mAuth: FirebaseAuth
     lateinit var mRef: DatabaseReference
 
@@ -41,10 +41,10 @@ class Register : AppCompatActivity() {
         //barı progrese eşitleme
         progressBar = progressBarRegister
 
-        // firebase kayıt kısmı //
+        // firebase tanımlamarı atama  kısmı //
         mAuth = FirebaseAuth.getInstance()
         mRef = FirebaseDatabase.getInstance().reference
-        // firebase kayıt kısmı son //
+        // firebase tanımlamarı atama  kısmı son //
 
     }
 
@@ -87,7 +87,7 @@ class Register : AppCompatActivity() {
         //Register sayfasından email kodu kontrol sayfasına gider son //
 
 
-        // girelen veriyi takip edip belli kurala göre onaylama //
+        // girelen veriyi takip edip belli kurala göre onaylama satır 110//
         eMailInputRegister.addTextChangedListener(watcher)
         userNameInputRegister.addTextChangedListener(watcher)
         passwordInputRegister.addTextChangedListener(watcher)
@@ -107,7 +107,7 @@ class Register : AppCompatActivity() {
 
 
     //Girelen input kontrol panali //
-    val watcher: TextWatcher = object : TextWatcher {
+    private val watcher: TextWatcher = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
 
         }
@@ -154,7 +154,7 @@ class Register : AppCompatActivity() {
             var password = passwordInputRegister.text.toString()
             var user_nickname = userNameInputRegister.text.toString()
             // kontrol sonrası olur ise yapılacaklar için onay kodu
-            var createAble = false
+            var userInfoExistanceCheck = false
 
             // Firebase Veri çekip kontrol kısmı   //
             mRef.child("users").child("typeC")
@@ -162,6 +162,7 @@ class Register : AppCompatActivity() {
                     override fun onCancelled(p0: DatabaseError) {
 
                     }
+
                     override fun onDataChange(p0: DataSnapshot) {
                         //eğer snaphot yani DB anlık hali boş değilse
                         if (p0.value != null) {
@@ -172,11 +173,11 @@ class Register : AppCompatActivity() {
                                     // Buraya email var ise yapılacaklar yazılacak  EGEMEN ALTAŞ//
                                     Toast.makeText(
                                         applicationContext,
-                                        "BU eposta zaten var",
+                                        "Bu eposta zaten var",
                                         Toast.LENGTH_LONG
                                     ).show()
                                     //eğer hiçbiri yoksa true yapsın ////
-                                    createAble = true
+                                    userInfoExistanceCheck = true
                                     break
                                 }
                                 // DB deki kullanıcıların nicklerini kontrol ediyor
@@ -184,17 +185,17 @@ class Register : AppCompatActivity() {
                                     // Buraya username var ise yapılacaklar yazılacak  EGEMEN ALTAŞ//
                                     Toast.makeText(
                                         applicationContext,
-                                        "BU UserName zaten var",
+                                        "Bu kullanici adi zaten var",
                                         Toast.LENGTH_LONG
                                     ).show()
                                     //eğer hiçbiri yok uygun ise true yapsın //////
-                                    createAble = true
+                                    userInfoExistanceCheck = true
                                     break
                                 }
                             }
                         }
                         // DB kontrolu sonucu uygun ise buraya Adım adım yeni veri yazma //
-                        if (createAble == false) {
+                        if (userInfoExistanceCheck == false) {
                             //Butona tıklanıldığı gibi görünür olup dönmeye başlar ///
                             progressBar.visibility = View.VISIBLE
                             //Butona tıklanıldığı gibi görünür olup dönmeye başlar SON///
@@ -216,11 +217,11 @@ class Register : AppCompatActivity() {
                                             .setValue(kaydedilicekKullanıcı)
                                             .addOnCompleteListener { reg ->
                                                 if (reg.isSuccessful) {
-                                                    //eğer başarılı bir şekilde DB ye yazarsa ana ekrana geçsin
+                                                    //// eğer başarılı bir şekilde DB ye yazarsa ana ekrana geçsin HomeScreene geçer ///
                                                     val intent = Intent(
                                                         applicationContext,
                                                         HomeScreen::class.java
-                                                    )
+                                                    ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                                                     startActivity(intent)
                                                     progressBar.visibility = View.INVISIBLE
                                                 } else {
@@ -251,16 +252,13 @@ class Register : AppCompatActivity() {
                                             "Problem oluştu",
                                             Toast.LENGTH_LONG
                                         ).show()
-
                                     }
                                 }
-
                         }
                         // DB kontrolu sonucu uygun ise buraya Adım adım yeni veri yazma SON //
                     }
                 })
             // Firebase Veri çekip kontrol kısmı  SON //
-
         }
     }
     ////////Register  auth kısmına veri ekleme firebase son ///////////

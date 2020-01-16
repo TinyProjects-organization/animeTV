@@ -62,11 +62,11 @@ class EMailKodragment : Fragment() {
     // gelen e maili sonraki sayfada alma son//
     val watcher: TextWatcher = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {

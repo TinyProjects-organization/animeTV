@@ -13,7 +13,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
 class BottomNavigationViewManager {
     companion object {
         // navigation kısmının efek ve düzenlemesi //
-        fun setupBottomNavigationView(bottomNavigationViewEx: BottomNavigationViewEx){
+        fun setupBottomNavigationView(bottomNavigationViewEx: BottomNavigationViewEx) {
             bottomNavigationViewEx.enableAnimation(false)
             bottomNavigationViewEx.setTextVisibility(false)
             bottomNavigationViewEx.enableShiftingMode(false)
@@ -22,36 +22,49 @@ class BottomNavigationViewManager {
         // navigation kısmının efek ve düzenlemesi  son//
 
         // navigasyonu aktif hale getirme kodu //
-        fun setupNavigation (context : Context, bottomNavigationViewEx: BottomNavigationViewEx) {
-            bottomNavigationViewEx.onNavigationItemSelectedListener = object :BottomNavigationView.OnNavigationItemSelectedListener{
-                override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
-                    // herhangi birine tıklandığında açılacak sayfa //
-                  when(menuItem.itemId){
-                      com.coders.animetv.R.id.listicon -> {
-                          val intent = Intent(context, List::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                          context.startActivity(intent)
-                          return true
-                      }
-                      com.coders.animetv.R.id.homeicon -> {
-                          val intent = Intent(context, HomeScreen::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                          context.startActivity(intent)
-                          return true
-                      }
-                      com.coders.animetv.R.id.profileicon -> {
-                          val intent = Intent(context, Profile::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                          context.startActivity(intent)
-                          return true
-                      }
-                      com.coders.animetv.R.id.chaticon -> {
-                          val intent = Intent(context, Chat::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                          context.startActivity(intent)
-                          return true
-                      }
-                  }
-                    // eğer üsttekilerden biri çalışmaz ise
-                    return false
+        fun setupNavigation(context: Context, bottomNavigationViewEx: BottomNavigationViewEx) {
+            bottomNavigationViewEx.onNavigationItemSelectedListener =
+                object : BottomNavigationView.OnNavigationItemSelectedListener {
+                    override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
+                        // herhangi birine tıklandığında açılacak sayfa //
+                        when (menuItem.itemId) {
+                            com.coders.animetv.R.id.listicon -> {
+                                val intent = Intent(
+                                    context,
+                                    List::class.java
+                                ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                context.startActivity(intent)
+                                return true
+                            }
+                            com.coders.animetv.R.id.homeicon -> {
+                                val intent = Intent(
+                                    context,
+                                    HomeScreen::class.java
+                                ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                context.startActivity(intent)
+                                return true
+                            }
+                            com.coders.animetv.R.id.profileicon -> {
+                                val intent = Intent(
+                                    context,
+                                    Profile::class.java
+                                ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                context.startActivity(intent)
+                                return true
+                            }
+                            com.coders.animetv.R.id.chaticon -> {
+                                val intent = Intent(
+                                    context,
+                                    Chat::class.java
+                                ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                context.startActivity(intent)
+                                return true
+                            }
+                        }
+                        // eğer üsttekilerden biri çalışmaz ise
+                        return false
+                    }
                 }
-            }
 
 
         }

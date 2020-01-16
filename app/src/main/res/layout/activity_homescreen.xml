@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Homescreen.HomeScreen"
     android:background="@drawable/animebg"
-    >
+    tools:context=".Homescreen.HomeScreen">
 
     <TextView
         android:id="@+id/textView4"
@@ -19,12 +18,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-
     // navigation kısmı online çekiyor //
+
     <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+        android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:id="@+id/bottomNavigationView"
         android:background="@drawable/bg_navbar_white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
