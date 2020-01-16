@@ -11,7 +11,11 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
 import android.widget.Toast
+import com.coders.animetv.Homescreen.HomeScreen
+import com.coders.animetv.Models.Users
 import com.coders.animetv.R
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -135,23 +139,53 @@ class Register : AppCompatActivity() {
     }
     //Girelen input kontrol panali son//
 
+    /////////    Register auth kısmına veri ekleme firebase  ////////////
 fun register() {
     registerBtn.setOnClickListener {
         var email = eMailInputRegister.text.toString()
         var password = passwordInputRegister.text.toString()
+        var user_nickname = userNameInputRegister.text.toString()
+
         mAuth.createUserWithEmailAndPassword(email , password).addOnCompleteListener { p0 ->
             if (p0.isComplete) {
-                val toast =
-                    Toast.makeText(applicationContext, "kayıt basarili", Toast.LENGTH_LONG)
-                toast.show()
+                var user_id = mAuth.currentUser!!.uid
+                //oturum açan kullanıcının verilerini DB ye kaydetme //
+                var kaydedilicekKullanıcı = Users(email,password,user_nickname,user_id)
+                mRef.child("users").child("typeC").child(user_id).setValue(kaydedilicekKullanıcı)
+                    .addOnCompleteListener { reg ->
+                        if (reg.isSuccessful){
+                            //eğer başarılı bir şekilde DB ye yazarsa ana ekrana geçsin
+                            Toast.makeText(applicationContext, "Kayıt oluşturuldu Giriş yapılıyor", Toast.LENGTH_LONG).show()
+                            val intent = Intent(this, HomeScreen::class.java)
+                            startActivity(intent)
+
+                        }else{
+                            //eğer kullanıcıyı DB ye yazarken sorun oluşursa kullanıcıyı silme kısmı //
+                            mAuth.currentUser!!.delete()
+                                .addOnCompleteListener { p1 ->
+                                    if (p1.isSuccessful){
+                                        Toast.makeText(applicationContext, "Bir hata oluştu, Tekrar deneyiniz", Toast.LENGTH_LONG).show()
+                                    }
+                                }
+                            //eğer kullanıcıyı DB ye yazarken sorun oluşursa kullanıcıyı silme kısmı son//
+
+                        }
+                    }
+                //oturum açan kullanıcının verilerini DB ye kaydetme son///
+
+
+
             } else {
-                val toast =
-                    Toast.makeText(applicationContext, "kayit olmadi", Toast.LENGTH_LONG)
-                toast.show()
+
+                    Toast.makeText(applicationContext, "Problem oluştu", Toast.LENGTH_LONG).show()
+
             }
         }
 
     }
 }
-    //auth kısmına veri ekleme firebase son //
+     ////////Register  auth kısmına veri ekleme firebase son ///////////
+
+
+    
 }
