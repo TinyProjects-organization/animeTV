@@ -23,12 +23,17 @@ class Login : AppCompatActivity() {
     // firebase kısmı tanımlama
     lateinit var mAuth: FirebaseAuth
     lateinit var mRef: DatabaseReference
+    lateinit var mAuthListener: FirebaseAuth.AuthStateListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        // basit şifre gösterme watcher gibi işlemler var
         init()
+        // giriş yapma işlemleri var
         firebaseLogin()
+        // kullanıcı giriş yapmış ve çıkış yapmadıysa otomatik giriş gibi işlemler
+        firebaseAuthListener()
 
         // firebase tanımlamarı atama  kısmı //
         mAuth = FirebaseAuth.getInstance()
@@ -50,6 +55,10 @@ class Login : AppCompatActivity() {
 
     // firebaseLogin fonksiyonunki DBLoginInfoCheck fundan buraya gelir bilgiler //
     private fun dBLoginInfoCheck(eMailOrUserName: String, pass: String) {
+        // öyle bir kullanıcı var mı yok mu diye kontrol //
+        var kullaniciBulundu = false
+        // öyle bir kullanıcı var mı yok mu diye kontrol SON//
+
         mRef.child("users").child("typeC").orderByChild("user_email")
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
@@ -62,12 +71,23 @@ class Login : AppCompatActivity() {
                         var bulunanKullanici = db.getValue(Users::class.java)
                         if (bulunanKullanici!!.user_email.toString() == usernameInput.text.toString()) {
                             oturumAC(bulunanKullanici, pass)
+                            kullaniciBulundu = true
                             break
                         } else if (bulunanKullanici!!.user_nickname.toString() == usernameInput.text.toString()) {
                             oturumAC(bulunanKullanici, pass)
+                            kullaniciBulundu = true
                             break
                         }
                     }
+                    // eğer böyle bir kullanıcı bulunmaz ise //
+                    if (kullaniciBulundu == false) {
+                        Toast.makeText(
+                            applicationContext,
+                            "Kullanıcı bulunamadı",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    // eğer böyle bir kullanıcı bulunmaz ise //
                 }
                 // bu Fonksiyonun içinde verilere tek tek bakıp o kullanıcı adını yada email var mı diye arıyor SON//
             })
@@ -166,4 +186,40 @@ class Login : AppCompatActivity() {
     // Login kısmındaki bilgileri doğru girildiğinde aktifleşicek btn izleyici kısmı son //
 
 
+    // kullanıcı giriş yapmış ve çıkış yapmadıysa otomatik giriş gibi işlemler //
+    private fun firebaseAuthListener() {
+        mAuthListener = FirebaseAuth.AuthStateListener {
+            var user = FirebaseAuth.getInstance().currentUser
+            // eğer kullanıcı bir dafa giriş yapmış ise çıkış yapana kadar otomatik sisteme sokar //
+            if (user != null) {
+                var intent = Intent(
+                    applicationContext,
+                    HomeScreen::class.java
+                ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                startActivity(intent)
+                // eğer kullanıcı bir dafa giriş yapmış ise çıkış yapana kadar otomatik sisteme sokar SON//
+
+                // eğer kullanıcı geri butonuna basar ise bu activityi geçtiği için geri dönemicek //
+                finish()
+                // eğer kullanıcı geri butonuna basar ise bu activityi geçtiği için geri dönemicek SON//
+
+            } else {
+            }
+        }
+    }
+    // kullanıcı giriş yapmış ve çıkış yapmadıysa otomatik giriş gibi işlemler SON//
+
+    // Login sayfasının activity kısmı çalışmaya başladığında ve durdurulduğunda yapılıcaklar //
+    override fun onStart() {
+        super.onStart()
+        mAuth.addAuthStateListener(mAuthListener)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener)
+        }
+    }
+    // Login sayfasının activity kısmı çalışmaya başladığında ve durdurulduğunda yapılıcaklar SON//
 }

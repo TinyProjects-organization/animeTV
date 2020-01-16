@@ -26,6 +26,7 @@ class Register : AppCompatActivity() {
     // firebase kısmı tanımlama
     lateinit var mAuth: FirebaseAuth
     lateinit var mRef: DatabaseReference
+    lateinit var mAuthListener: FirebaseAuth.AuthStateListener
 
     //progresBar
     lateinit var progressBar: ProgressBar
@@ -36,8 +37,15 @@ class Register : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
+        //basit watcher işlemleri ve buton işlemleri
         init()
+
+        // Firebase kayıt olma ve kontrol işlemleri
         register()
+
+        //hesaba giriş yapılmış mı yapılmamış mı diye
+        firebaseAuthListener()
+
         //barı progrese eşitleme
         progressBar = progressBarRegister
 
@@ -97,15 +105,6 @@ class Register : AppCompatActivity() {
 
     }
 
-
-    // geri tuşuna basılınca geri gideni geri getirir     //
-    override fun onBackPressed() {
-        RegisterPageRoot.visibility = View.VISIBLE
-        super.onBackPressed()
-    }
-    //geri tuşuna basılınca geri gideni geri getirir  son//
-
-
     //Girelen input kontrol panali //
     private val watcher: TextWatcher = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
@@ -152,7 +151,7 @@ class Register : AppCompatActivity() {
         registerBtn.setOnClickListener {
             var email = eMailInputRegister.text.toString()
             var password = passwordInputRegister.text.toString()
-            var user_nickname = userNameInputRegister.text.toString()
+            var userNickname = userNameInputRegister.text.toString()
             // kontrol sonrası olur ise yapılacaklar için onay kodu
             var userInfoExistanceCheck = false
 
@@ -168,14 +167,17 @@ class Register : AppCompatActivity() {
                         if (p0.value != null) {
                             for (user in p0.children) {
                                 var gelenKullanicilar = user.getValue(Users::class.java)
+
                                 //DB deki kayıtlı emailleri kontrol ediyor ki aynısı açılmasın
                                 if (gelenKullanicilar!!.user_email == eMailInputRegister.text.toString()) {
+
                                     // Buraya email var ise yapılacaklar yazılacak  EGEMEN ALTAŞ//
                                     Toast.makeText(
                                         applicationContext,
                                         "Bu eposta zaten var",
                                         Toast.LENGTH_LONG
                                     ).show()
+
                                     //eğer hiçbiri yoksa true yapsın ////
                                     userInfoExistanceCheck = true
                                     break
@@ -188,6 +190,7 @@ class Register : AppCompatActivity() {
                                         "Bu kullanici adi zaten var",
                                         Toast.LENGTH_LONG
                                     ).show()
+
                                     //eğer hiçbiri yok uygun ise true yapsın //////
                                     userInfoExistanceCheck = true
                                     break
@@ -196,25 +199,28 @@ class Register : AppCompatActivity() {
                         }
                         // DB kontrolu sonucu uygun ise buraya Adım adım yeni veri yazma //
                         if (userInfoExistanceCheck == false) {
+
                             //Butona tıklanıldığı gibi görünür olup dönmeye başlar ///
                             progressBar.visibility = View.VISIBLE
                             //Butona tıklanıldığı gibi görünür olup dönmeye başlar SON///
+
                             mAuth.createUserWithEmailAndPassword(email, password)
                                 .addOnCompleteListener { p0 ->
                                     if (p0.isComplete) {
-                                        var user_id = mAuth.currentUser!!.uid
+                                        val user_id = mAuth.currentUser!!.uid
+
                                         //oturum açan kullanıcının verilerini DB ye kaydetme //
-                                        var kaydedilicekKullanıcı =
+                                        val kaydedilicekKullanici =
                                             Users(
                                                 email,
                                                 password,
-                                                user_nickname,
+                                                userNickname,
                                                 user_id,
                                                 currentTimeString
                                             )
                                         // DB oluşturma ağacı ////////
                                         mRef.child("users").child("typeC").child(user_id)
-                                            .setValue(kaydedilicekKullanıcı)
+                                            .setValue(kaydedilicekKullanici)
                                             .addOnCompleteListener { reg ->
                                                 if (reg.isSuccessful) {
                                                     //// eğer başarılı bir şekilde DB ye yazarsa ana ekrana geçsin HomeScreene geçer ///
@@ -223,24 +229,33 @@ class Register : AppCompatActivity() {
                                                         HomeScreen::class.java
                                                     ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                                                     startActivity(intent)
+                                                    //// eğer başarılı bir şekilde DB ye yazarsa ana ekrana geçsin HomeScreene geçer SON///
+
+                                                    //eğer giriş yapılmış ise bu sayfaya geri dönülmez //
+                                                    finish()
+                                                    //eğer giriş yapılmış ise bu sayfaya geri dönülmez SON//
+
+                                                    //giriş yapılırken ana sayfaya progres bar görünmez olur //
                                                     progressBar.visibility = View.INVISIBLE
+                                                    //giriş yapılırken ana sayfaya progres bar görünmez olur SON//
                                                 } else {
                                                     //eğer kullanıcıyı DB ye yazarken sorun oluşursa kullanıcıyı silme kısmı //
+
                                                     mAuth.currentUser!!.delete()
                                                         .addOnCompleteListener { p1 ->
                                                             if (p1.isSuccessful) {
+
                                                                 //hata oluşur ise progress bar kaybolup toast msg yazıcak //
                                                                 progressBar.visibility =
                                                                     View.INVISIBLE
                                                                 Toast.makeText(
                                                                     applicationContext,
-                                                                    "Bir hata oluştu,Lütfen tekrar deneyiniz",
+                                                                    "Bir hata oluştu, Lütfen tekrar deneyiniz",
                                                                     Toast.LENGTH_LONG
                                                                 ).show()
                                                             }
                                                         }
                                                     //eğer kullanıcıyı DB ye yazarken sorun oluşursa kullanıcıyı silme kısmı son//
-
                                                 }
                                             }
                                         //oturum açan kullanıcının verilerini DB ye kaydetme son///
@@ -261,7 +276,45 @@ class Register : AppCompatActivity() {
             // Firebase Veri çekip kontrol kısmı  SON //
         }
     }
-    ////////Register  auth kısmına veri ekleme firebase son ///////////
+    ////////Register  auth kısmına veri ekleme firebase SON ///////////
 
+    // kullanıcı giriş yapmış ve çıkış yapmadıysa otomatik giriş gibi işlemler //
+    private fun firebaseAuthListener() {
+        mAuthListener = object : FirebaseAuth.AuthStateListener {
+            override fun onAuthStateChanged(p0: FirebaseAuth) {
+                var user = FirebaseAuth.getInstance().currentUser
+                // eğer kullanıcı bir dafa giriş yapmış ise çıkış yapana kadar otomatik sisteme sokar //
+                if (user != null) {
+                    var intent = Intent(
+                        applicationContext,
+                        HomeScreen::class.java
+                    ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    startActivity(intent)
+                    // eğer kullanıcı bir dafa giriş yapmış ise çıkış yapana kadar otomatik sisteme sokar SON//
+
+                    // eğer kullanıcı geri butonuna basar ise bu activityi geçtiği için geri dönemicek //
+                    finish()
+                    // eğer kullanıcı geri butonuna basar ise bu activityi geçtiği için geri dönemicek SON//
+
+                } else {
+                }
+            }
+        }
+    }
+    // kullanıcı giriş yapmış ve çıkış yapmadıysa otomatik giriş gibi işlemler SON//
+
+    // Login sayfasının activity kısmı çalışmaya başladığında ve durdurulduğunda yapılıcaklar //
+    override fun onStart() {
+        super.onStart()
+        mAuth.addAuthStateListener(mAuthListener)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener)
+        }
+    }
+    // Login sayfasının activity kısmı çalışmaya başladığında ve durdurulduğunda yapılıcaklar SON//
 
 }
