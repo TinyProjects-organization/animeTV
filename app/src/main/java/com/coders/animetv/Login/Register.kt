@@ -1,25 +1,26 @@
 package com.coders.animetv.Login
 
-import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
+import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.coders.animetv.Homescreen.HomeScreen
 import com.coders.animetv.Models.Users
 import com.coders.animetv.R
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_register.*
+import java.text.DateFormat
+import java.util.*
+
 
 class Register : AppCompatActivity() {
 
@@ -27,12 +28,19 @@ class Register : AppCompatActivity() {
     lateinit var mAuth: FirebaseAuth
     lateinit var mRef: DatabaseReference
 
+    //progresBar
+    lateinit var progressBar: ProgressBar
+
+    // anlık saati ve günü oluşturan sistem //
+    val currentTime: Date = Calendar.getInstance().getTime()
+    val currentTimeString: String = DateFormat.getTimeInstance().format(currentTime)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
         init()
         register()
-
+        //barı progrese eşitleme
+        progressBar = progressBarRegister
 
         // firebase kayıt kısmı //
         mAuth = FirebaseAuth.getInstance()
@@ -146,22 +154,21 @@ class Register : AppCompatActivity() {
             var email = eMailInputRegister.text.toString()
             var password = passwordInputRegister.text.toString()
             var user_nickname = userNameInputRegister.text.toString()
+            //Butona tıklanıldığı gibi görünür olup dönmeye başlar ///
+            progressBar.visibility = View.VISIBLE
 
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { p0 ->
                 if (p0.isComplete) {
                     var user_id = mAuth.currentUser!!.uid
                     //oturum açan kullanıcının verilerini DB ye kaydetme //
-                    var kaydedilicekKullanıcı = Users(email, password, user_nickname, user_id)
+                    var kaydedilicekKullanıcı =
+                        Users(email, password, user_nickname, user_id, currentTimeString)
+                    // DB oluşturma ağacı ////////
                     mRef.child("users").child("typeC").child(user_id)
                         .setValue(kaydedilicekKullanıcı)
                         .addOnCompleteListener { reg ->
                             if (reg.isSuccessful) {
                                 //eğer başarılı bir şekilde DB ye yazarsa ana ekrana geçsin
-                                Toast.makeText(
-                                    applicationContext,
-                                    "Kayıt oluşturuldu Giriş yapılıyor",
-                                    Toast.LENGTH_LONG
-                                ).show()
                                 val intent = Intent(this, HomeScreen::class.java)
                                 startActivity(intent)
 
@@ -170,9 +177,11 @@ class Register : AppCompatActivity() {
                                 mAuth.currentUser!!.delete()
                                     .addOnCompleteListener { p1 ->
                                         if (p1.isSuccessful) {
+                                            //hata oluşur ise progress bar kaybolup toast msg yazıcak //
+                                            progressBar.visibility = View.INVISIBLE
                                             Toast.makeText(
                                                 applicationContext,
-                                                "Bir hata oluştu, Tekrar deneyiniz",
+                                                "Bir hata oluştu,Lütfen tekrar deneyiniz",
                                                 Toast.LENGTH_LONG
                                             ).show()
                                         }
@@ -182,7 +191,6 @@ class Register : AppCompatActivity() {
                             }
                         }
                     //oturum açan kullanıcının verilerini DB ye kaydetme son///
-
 
                 } else {
 
