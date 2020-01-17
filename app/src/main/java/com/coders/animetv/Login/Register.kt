@@ -31,20 +31,21 @@ class Register : AppCompatActivity() {
     //progresBar
     lateinit var progressBar: ProgressBar
 
-    // anlık saati ve günü oluşturan sistem //
-    val currentTime: Date = Calendar.getInstance().getTime()
+    // kayıt olduğu gün bilgisi //
+    private val currentTime: Date = Calendar.getInstance().getTime()
     val currentTimeString: String = DateFormat.getTimeInstance().format(currentTime)
+    // kayıt olduğu gün bilgisi SON //
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
+        //hesaba giriş yapılmış mı yapılmamış mı diye
+        firebaseAuthListener()
+
         //basit watcher işlemleri ve buton işlemleri
         init()
 
         // Firebase kayıt olma ve kontrol işlemleri
         register()
-
-        //hesaba giriş yapılmış mı yapılmamış mı diye
-        firebaseAuthListener()
 
         //barı progrese eşitleme
         progressBar = progressBarRegister
@@ -119,7 +120,7 @@ class Register : AppCompatActivity() {
 
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            if (s!!.length >= 1) {
+            if (s!!.isNotEmpty()) {
                 if (passwordInputRegister.text.toString().length > 5
                     && userNameInputRegister.text.toString().length > 5
                     && eMailInputRegister.text.toString().length > 5
@@ -147,11 +148,11 @@ class Register : AppCompatActivity() {
     //Girelen input kontrol panali son//
 
     /////////    Register auth kısmına veri ekleme firebase  ////////////
-    fun register() {
+    private fun register() {
         registerBtn.setOnClickListener {
-            var email = eMailInputRegister.text.toString()
-            var password = passwordInputRegister.text.toString()
-            var userNickname = userNameInputRegister.text.toString()
+            val email = eMailInputRegister.text.toString()
+            val password = passwordInputRegister.text.toString()
+            val userNickname = userNameInputRegister.text.toString()
             // kontrol sonrası olur ise yapılacaklar için onay kodu
             var userInfoExistanceCheck = false
 
@@ -166,7 +167,7 @@ class Register : AppCompatActivity() {
                         //eğer snaphot yani DB anlık hali boş değilse
                         if (p0.value != null) {
                             for (user in p0.children) {
-                                var gelenKullanicilar = user.getValue(Users::class.java)
+                                val gelenKullanicilar = user.getValue(Users::class.java)
 
                                 //DB deki kayıtlı emailleri kontrol ediyor ki aynısı açılmasın
                                 if (gelenKullanicilar!!.user_email == eMailInputRegister.text.toString()) {
@@ -198,16 +199,16 @@ class Register : AppCompatActivity() {
                             }
                         }
                         // DB kontrolu sonucu uygun ise buraya Adım adım yeni veri yazma //
-                        if (userInfoExistanceCheck == false) {
+                        if (!userInfoExistanceCheck) {
 
                             //Butona tıklanıldığı gibi görünür olup dönmeye başlar ///
                             progressBar.visibility = View.VISIBLE
                             //Butona tıklanıldığı gibi görünür olup dönmeye başlar SON///
 
                             mAuth.createUserWithEmailAndPassword(email, password)
-                                .addOnCompleteListener { p0 ->
-                                    if (p0.isComplete) {
-                                        val user_id = mAuth.currentUser!!.uid
+                                .addOnCompleteListener { t1 ->
+                                    if (t1.isComplete) {
+                                        val userId = mAuth.currentUser!!.uid
 
                                         //oturum açan kullanıcının verilerini DB ye kaydetme //
                                         val kaydedilicekKullanici =
@@ -215,11 +216,11 @@ class Register : AppCompatActivity() {
                                                 email,
                                                 password,
                                                 userNickname,
-                                                user_id,
+                                                userId,
                                                 currentTimeString
                                             )
                                         // DB oluşturma ağacı ////////
-                                        mRef.child("users").child("typeC").child(user_id)
+                                        mRef.child("users").child("typeC").child(userId)
                                             .setValue(kaydedilicekKullanici)
                                             .addOnCompleteListener { reg ->
                                                 if (reg.isSuccessful) {
@@ -311,10 +312,9 @@ class Register : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener)
-        }
+        mAuth.removeAuthStateListener(mAuthListener)
     }
+
     // Login sayfasının activity kısmı çalışmaya başladığında ve durdurulduğunda yapılıcaklar SON//
 
 }

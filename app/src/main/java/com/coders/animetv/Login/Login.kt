@@ -28,12 +28,14 @@ class Login : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        // basit şifre gösterme watcher gibi işlemler var
-        init()
-        // giriş yapma işlemleri var
-        firebaseLogin()
         // kullanıcı giriş yapmış ve çıkış yapmadıysa otomatik giriş gibi işlemler
         firebaseAuthListener()
+
+        // basit şifre gösterme watcher gibi işlemler var
+        init()
+
+        // giriş yapma işlemleri var
+        firebaseLogin()
 
         // firebase tanımlamarı atama  kısmı //
         mAuth = FirebaseAuth.getInstance()
@@ -68,19 +70,19 @@ class Login : AppCompatActivity() {
                 // bu Fonksiyonun içinde verilere tek tek bakıp o kullanıcı adını yada email var mı diye arıyor //
                 override fun onDataChange(p0: DataSnapshot) {
                     for (db in p0.children) {
-                        var bulunanKullanici = db.getValue(Users::class.java)
-                        if (bulunanKullanici!!.user_email.toString() == usernameInput.text.toString()) {
+                        val bulunanKullanici = db.getValue(Users::class.java)
+                        if (bulunanKullanici!!.user_email.toString() == eMailOrUserName) {
                             oturumAC(bulunanKullanici, pass)
                             kullaniciBulundu = true
                             break
-                        } else if (bulunanKullanici!!.user_nickname.toString() == usernameInput.text.toString()) {
+                        } else if (bulunanKullanici.user_nickname.toString() == eMailOrUserName) {
                             oturumAC(bulunanKullanici, pass)
                             kullaniciBulundu = true
                             break
                         }
                     }
                     // eğer böyle bir kullanıcı bulunmaz ise //
-                    if (kullaniciBulundu == false) {
+                    if (!kullaniciBulundu) {
                         Toast.makeText(
                             applicationContext,
                             "Kullanıcı bulunamadı",
@@ -95,29 +97,24 @@ class Login : AppCompatActivity() {
 
     // bulunan kullanicinin bilgileri ile girilen bilgileri eşitleyip girmek //
     private fun oturumAC(bulunanKullanici: Users, pass: String) {
-        var geciciEPOSTA = ""
         // kullanıcı ne ile girerse girsin bilgisindeki emaili boşa atayıp onla giriş yapıyoruz //
-        geciciEPOSTA = bulunanKullanici.user_email.toString()
+        val geciciEPOSTA: String = bulunanKullanici.user_email.toString()
         // kullanıcı ne ile girerse girsin bilgisindeki emaili boşa atayıp onla giriş yapıyoruz SON//
         // Firebase Auth kısmı //
         mAuth.signInWithEmailAndPassword(geciciEPOSTA, pass)
-            .addOnCompleteListener(object : OnCompleteListener<AuthResult> {
-                override fun onComplete(p0: Task<AuthResult>) {
-                    if (p0.isSuccessful) {
-                        var intent = Intent(applicationContext, HomeScreen::class.java)
-                        startActivity(intent)
-                    } else {
-                        // eğer 2 bilgiden biri yanlış bile olsa buraya girer //
-                        Toast.makeText(
-                            applicationContext,
-                            "Kullanıcı adi yada şifre hatalı",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
+            .addOnCompleteListener { p0 ->
+                if (p0.isSuccessful) {
+                    val intent = Intent(applicationContext, HomeScreen::class.java)
+                    startActivity(intent)
+                } else {
+                    // eğer 2 bilgiden biri yanlış bile olsa buraya girer //
+                    Toast.makeText(
+                        applicationContext,
+                        "Kullanıcı adi yada şifre hatalı",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
-
-                // Firebase Auth kısmı SON//
-            })
+            }
     }
     // bulunan kullanicinin bilgileri ile girilen bilgileri eşitleyip girmek SON//
     // firebaseLogin fonksiyonunki DBLoginInfoCheck fundan buraya gelir bilgiler SON//
@@ -189,10 +186,10 @@ class Login : AppCompatActivity() {
     // kullanıcı giriş yapmış ve çıkış yapmadıysa otomatik giriş gibi işlemler //
     private fun firebaseAuthListener() {
         mAuthListener = FirebaseAuth.AuthStateListener {
-            var user = FirebaseAuth.getInstance().currentUser
+            val user = FirebaseAuth.getInstance().currentUser
             // eğer kullanıcı bir dafa giriş yapmış ise çıkış yapana kadar otomatik sisteme sokar //
             if (user != null) {
-                var intent = Intent(
+                val intent = Intent(
                     applicationContext,
                     HomeScreen::class.java
                 ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
@@ -203,7 +200,6 @@ class Login : AppCompatActivity() {
                 finish()
                 // eğer kullanıcı geri butonuna basar ise bu activityi geçtiği için geri dönemicek SON//
 
-            } else {
             }
         }
     }
@@ -214,12 +210,10 @@ class Login : AppCompatActivity() {
         super.onStart()
         mAuth.addAuthStateListener(mAuthListener)
     }
-
     override fun onStop() {
         super.onStop()
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener)
-        }
+        mAuth.removeAuthStateListener(mAuthListener)
     }
     // Login sayfasının activity kısmı çalışmaya başladığında ve durdurulduğunda yapılıcaklar SON//
+
 }
