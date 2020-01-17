@@ -44,10 +44,10 @@ class Chat : AppCompatActivity() {
     // bottom navigation view çalıştırma fonksiyonu //
     fun setupNavigationView() {
         BottomNavigationViewManager.setupBottomNavigationView(bottomNavigationViewChat)
-        BottomNavigationViewManager.setupNavigation(this,bottomNavigationViewChat)
+        BottomNavigationViewManager.setupNavigation(this,bottomNavigationViewChat,ACTIVITY_NUMBER)
         var menu = bottomNavigationViewChat.menu
         var menuItem = menu.getItem(ACTIVITY_NUMBER)
-        menuItem.setChecked(true)
+        menuItem.isChecked = true
     }
     // bottom navigation view çalıştırma fonksiyonu sonu//
 

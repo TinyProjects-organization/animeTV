@@ -55,10 +55,10 @@ class Profile : AppCompatActivity() {
     // bottom navigation view çalıştırma fonksiyonu //
     fun setupNavigationView() {
         BottomNavigationViewManager.setupBottomNavigationView(bottomNavigationViewProfile)
-        BottomNavigationViewManager.setupNavigation(this, bottomNavigationViewProfile)
+        BottomNavigationViewManager.setupNavigation(this, bottomNavigationViewProfile,ACTIVITY_NUMBER)
         var menu = bottomNavigationViewProfile.menu
         var menuItem = menu.getItem(ACTIVITY_NUMBER)
-        menuItem.setChecked(true)
+        menuItem.isChecked = true
     }
     /// bottom navigation view çalıştırma fonksiyonu sonu //
 
@@ -74,7 +74,7 @@ class Profile : AppCompatActivity() {
                     applicationContext,
                     Login::class.java
                 ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 startActivity(intent)
                 // eğer kullanıcı bir dafa giriş yapmış ise çıkış yapana kadar otomatik sisteme sokar SON//
 

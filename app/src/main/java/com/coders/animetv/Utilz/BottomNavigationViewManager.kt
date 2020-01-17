@@ -3,6 +3,7 @@ package com.coders.animetv.Utilz
 import android.content.Context
 import android.content.Intent
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import com.coders.animetv.Chat.Chat
 import com.coders.animetv.Homescreen.HomeScreen
 import com.coders.animetv.List.List
@@ -16,57 +17,74 @@ class BottomNavigationViewManager {
         fun setupBottomNavigationView(bottomNavigationViewEx: BottomNavigationViewEx) {
             bottomNavigationViewEx.enableAnimation(false)
             bottomNavigationViewEx.setTextVisibility(false)
-            bottomNavigationViewEx.enableShiftingMode(false)
-            bottomNavigationViewEx.enableShiftingMode(false)
+            //  bottomNavigationViewEx.enableShiftingMode(false)
+            // bottomNavigationViewEx.enableShiftingMode(false)
         }
         // navigation kısmının efek ve düzenlemesi  son//
 
         // navigasyonu aktif hale getirme kodu //
-        fun setupNavigation(context: Context, bottomNavigationViewEx: BottomNavigationViewEx) {
+        fun setupNavigation(
+            context: Context,
+            bottomNavigationViewEx: BottomNavigationViewEx,
+            sayfaBulma: Int
+        ) {
             bottomNavigationViewEx.onNavigationItemSelectedListener =
                 object : BottomNavigationView.OnNavigationItemSelectedListener {
                     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
                         // herhangi birine tıklandığında açılacak sayfa //
                         when (menuItem.itemId) {
                             com.coders.animetv.R.id.listicon -> {
-                                val intent = Intent(
-                                    context,
-                                    List::class.java
-                                ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                                context.startActivity(intent)
-                                return true
+                                if (sayfaBulma != 0) {
+                                    val intent = Intent(
+                                        context,
+                                        List::class.java
+                                    ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                    context.startActivity(intent)
+                                    (context as AppCompatActivity).overridePendingTransition(0, 0)
+                                    return true
+                                }
                             }
                             com.coders.animetv.R.id.homeicon -> {
-                                val intent = Intent(
-                                    context,
-                                    HomeScreen::class.java
-                                ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                                context.startActivity(intent)
-                                return true
+                                if (sayfaBulma != 1) {
+                                    val intent = Intent(
+                                        context,
+                                        HomeScreen::class.java
+                                    ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                    context.startActivity(intent)
+                                    (context as AppCompatActivity).overridePendingTransition(0, 0)
+                                    return true
+                                }
+
                             }
                             com.coders.animetv.R.id.profileicon -> {
-                                val intent = Intent(
-                                    context,
-                                    Profile::class.java
-                                ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                                context.startActivity(intent)
-                                return true
+                                if (sayfaBulma != 2) {
+                                    val intent = Intent(
+                                        context,
+                                        Profile::class.java
+                                    ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                    context.startActivity(intent)
+                                    (context as AppCompatActivity).overridePendingTransition(0, 0)
+                                    return true
+                                }
+
                             }
                             com.coders.animetv.R.id.chaticon -> {
-                                val intent = Intent(
-                                    context,
-                                    Chat::class.java
-                                ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                                context.startActivity(intent)
-                                return true
+                                if (sayfaBulma != 3) {
+                                    val intent = Intent(
+                                        context,
+                                        Chat::class.java
+                                    ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                    context.startActivity(intent)
+                                    (context as AppCompatActivity).overridePendingTransition(0, 0)
+                                    return true
+                                }
+
                             }
                         }
                         // eğer üsttekilerden biri çalışmaz ise
                         return false
                     }
                 }
-
-
         }
         // navigasyonu aktif hale getirme kodu sonu//
     }

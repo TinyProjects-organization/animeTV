@@ -105,6 +105,7 @@ class Login : AppCompatActivity() {
             .addOnCompleteListener { p0 ->
                 if (p0.isSuccessful) {
                     val intent = Intent(applicationContext, HomeScreen::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     startActivity(intent)
                 } else {
                     // eğer 2 bilgiden biri yanlış bile olsa buraya girer //
@@ -193,6 +194,7 @@ class Login : AppCompatActivity() {
                     applicationContext,
                     HomeScreen::class.java
                 ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 startActivity(intent)
                 // eğer kullanıcı bir dafa giriş yapmış ise çıkış yapana kadar otomatik sisteme sokar SON//
 

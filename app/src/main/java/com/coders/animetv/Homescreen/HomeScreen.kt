@@ -43,10 +43,11 @@ class HomeScreen : AppCompatActivity() {
     // bottom navigation view çalıştırma fonksiyonu //
     fun setupNavigationView() {
         BottomNavigationViewManager.setupBottomNavigationView(bottomNavigationView)
-        BottomNavigationViewManager.setupNavigation(this, bottomNavigationView)
-        var menu = bottomNavigationView.menu
-        var menuItem = menu.getItem(ACTIVITY_NUMBER)
-        menuItem.setChecked(true)
+        BottomNavigationViewManager.setupNavigation(this, bottomNavigationView,ACTIVITY_NUMBER)
+        val menu = bottomNavigationView.menu
+        val menuItem = menu.getItem(ACTIVITY_NUMBER)
+        menuItem.isChecked = true
+
     }
     // bottom navigation view çalıştırma fonksiyonu sonu//
 

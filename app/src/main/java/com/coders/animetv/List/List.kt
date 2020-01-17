@@ -23,10 +23,10 @@ class List : AppCompatActivity() {
     // bottom navigation view çalıştırma fonksiyonu //
     fun setupNavigationView() {
         BottomNavigationViewManager.setupBottomNavigationView(bottomNavigationViewList)
-        BottomNavigationViewManager.setupNavigation(this, bottomNavigationViewList)
+        BottomNavigationViewManager.setupNavigation(this, bottomNavigationViewList,ACTIVITY_NUMBER)
         var menu = bottomNavigationViewList.menu
         var menuItem = menu.getItem(ACTIVITY_NUMBER)
-        menuItem.setChecked(true)
+        menuItem.isChecked = true
     }
     // bottom navigation view çalıştırma fonksiyonu sonu//
 }
