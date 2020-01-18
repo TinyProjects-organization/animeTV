@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/favoriteicon"
+        android:icon="@drawable/ic_favorite_white_24dp"
+        android:title=""
+        >
+    </item>
+    <item
+        android:id="@+id/historyicon"
+        android:icon="@drawable/ic_history"
+        android:title=""
+        >
+    </item>
+    <item
+        android:id="@+id/editprofileicon"
+        android:icon="@drawable/ic_create_white_48dp"
+        android:title=""
+        >
+
+    </item>
+</menu>
