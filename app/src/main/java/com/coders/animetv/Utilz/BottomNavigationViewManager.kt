@@ -8,6 +8,7 @@ import com.coders.animetv.Chat.Chat
 import com.coders.animetv.Homescreen.HomeScreen
 import com.coders.animetv.List.List
 import com.coders.animetv.Profile.Profile
+import com.coders.animetv.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
 
@@ -33,49 +34,45 @@ class BottomNavigationViewManager {
                     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
                         // herhangi birine tıklandığında açılacak sayfa //
                         when (menuItem.itemId) {
-                            com.coders.animetv.R.id.listicon -> {
+                            R.id.listicon -> {
                                 if (sayfaBulma != 0) {
                                     val intent = Intent(
                                         context,
                                         List::class.java
                                     ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                                     context.startActivity(intent)
-                                    (context as AppCompatActivity).overridePendingTransition(0, 0)
                                     return true
                                 }
                             }
-                            com.coders.animetv.R.id.homeicon -> {
+                            R.id.homeicon -> {
                                 if (sayfaBulma != 1) {
                                     val intent = Intent(
                                         context,
                                         HomeScreen::class.java
                                     ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                                     context.startActivity(intent)
-                                    (context as AppCompatActivity).overridePendingTransition(0, 0)
                                     return true
                                 }
 
                             }
-                            com.coders.animetv.R.id.profileicon -> {
+                            R.id.profileicon -> {
                                 if (sayfaBulma != 2) {
                                     val intent = Intent(
                                         context,
                                         Profile::class.java
                                     ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                                     context.startActivity(intent)
-                                    (context as AppCompatActivity).overridePendingTransition(0, 0)
                                     return true
                                 }
 
                             }
-                            com.coders.animetv.R.id.chaticon -> {
+                            R.id.chaticon -> {
                                 if (sayfaBulma != 3) {
                                     val intent = Intent(
                                         context,
                                         Chat::class.java
                                     ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                                     context.startActivity(intent)
-                                    (context as AppCompatActivity).overridePendingTransition(0, 0)
                                     return true
                                 }
 
@@ -86,6 +83,9 @@ class BottomNavigationViewManager {
                     }
                 }
         }
+
         // navigasyonu aktif hale getirme kodu sonu//
+
+
     }
 }

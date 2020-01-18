@@ -4,9 +4,11 @@ import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import com.coders.animetv.Login.Login
 import com.coders.animetv.R
 import com.coders.animetv.Utilz.BottomNavigationViewManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -37,6 +39,9 @@ class Profile : AppCompatActivity() {
         //çıkış yap gibi işlemler
         init()
 
+        //Profile page Navigation view kısmı
+        setupProfileNavigationView()
+
         // firebase tanımlamarı atama  kısmı //
         mAuth = FirebaseAuth.getInstance()
         mRef = FirebaseDatabase.getInstance().reference
@@ -56,11 +61,49 @@ class Profile : AppCompatActivity() {
     fun setupNavigationView() {
         BottomNavigationViewManager.setupBottomNavigationView(bottomNavigationViewProfile)
         BottomNavigationViewManager.setupNavigation(this, bottomNavigationViewProfile,ACTIVITY_NUMBER)
-        var menu = bottomNavigationViewProfile.menu
-        var menuItem = menu.getItem(ACTIVITY_NUMBER)
+        val menu = bottomNavigationViewProfile.menu
+        val menuItem = menu.getItem(ACTIVITY_NUMBER)
         menuItem.isChecked = true
+
     }
     /// bottom navigation view çalıştırma fonksiyonu sonu //
+
+    // Profile navigation view çalıştırma fonksiyonu //
+   private fun setupProfileNavigationView() {
+        BottomNavigationViewManager.setupBottomNavigationView(profile_navigation)
+        profile_navigation.onNavigationItemSelectedListener = object : BottomNavigationView.OnNavigationItemSelectedListener{
+            override fun onNavigationItemSelected(p0: MenuItem): Boolean {
+                when (p0.itemId) {
+                    R.id.favoriteicon -> {
+                        var transaction = supportFragmentManager.beginTransaction()
+                        transaction.replace(R.id.profile_navbar_layout,favoriteFragment())
+                        transaction.addToBackStack(null)
+                        transaction.commit()
+                        return true
+                    }
+                    R.id.historyicon -> {
+                        var transaction = supportFragmentManager.beginTransaction()
+                        transaction.replace(R.id.profile_navbar_layout,historyFragment())
+                        transaction.addToBackStack(null)
+                        transaction.commit()
+                        return true
+                    }
+
+                    R.id.editprofileicon -> {
+                        var transaction = supportFragmentManager.beginTransaction()
+                        transaction.replace(R.id.profile_navbar_layout,editprofileFragment())
+                        transaction.addToBackStack(null)
+                        transaction.commit()
+                        return true
+                    }
+                }
+
+                return false
+            }
+
+        }
+    }
+    /// profile navigation view çalıştırma fonksiyonu sonu //
 
 
 
