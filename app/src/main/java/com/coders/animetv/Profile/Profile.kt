@@ -1,6 +1,6 @@
 package com.coders.animetv.Profile
 
-import android.app.Dialog
+
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,7 +12,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.android.synthetic.main.activity_homescreen.*
 import kotlinx.android.synthetic.main.activity_profile.*
 
 class Profile : AppCompatActivity() {
@@ -68,7 +67,7 @@ class Profile : AppCompatActivity() {
     }
     /// bottom navigation view çalıştırma fonksiyonu sonu //
 
-    // Profile navigation view çalıştırma fonksiyonu //
+    // Profile navigation view işlemleri   //
    private fun setupProfileNavigationView() {
         BottomNavigationViewManager.setupBottomNavigationView(profile_navigation)
         profile_navigation.onNavigationItemSelectedListener = object : BottomNavigationView.OnNavigationItemSelectedListener{
@@ -103,7 +102,7 @@ class Profile : AppCompatActivity() {
 
         }
     }
-    /// profile navigation view çalıştırma fonksiyonu sonu //
+    /// profile navigation view işlemleri sonu //
 
 
 
