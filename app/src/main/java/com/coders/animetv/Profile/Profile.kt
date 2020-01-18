@@ -50,14 +50,14 @@ class Profile : AppCompatActivity() {
 
     private fun init() {
         cikisYap.setOnClickListener {
-            var dialog = SignOutFragment()
+            val dialog = SignOutFragment()
             dialog.show(supportFragmentManager,"çıkış yapılsın mı sorusu")
         }
     }
 
 
     // bottom navigation view çalıştırma fonksiyonu //
-    fun setupNavigationView() {
+    private fun setupNavigationView() {
         BottomNavigationViewManager.setupBottomNavigationView(bottomNavigationViewProfile)
         BottomNavigationViewManager.setupNavigation(this, bottomNavigationViewProfile,ACTIVITY_NUMBER)
         val menu = bottomNavigationViewProfile.menu
@@ -74,14 +74,14 @@ class Profile : AppCompatActivity() {
             override fun onNavigationItemSelected(p0: MenuItem): Boolean {
                 when (p0.itemId) {
                     R.id.favoriteicon -> {
-                        var transaction = supportFragmentManager.beginTransaction()
+                        val transaction = supportFragmentManager.beginTransaction()
                         transaction.replace(R.id.profile_navbar_layout,favoriteFragment())
                         transaction.addToBackStack(null)
                         transaction.commit()
                         return true
                     }
                     R.id.historyicon -> {
-                        var transaction = supportFragmentManager.beginTransaction()
+                        val transaction = supportFragmentManager.beginTransaction()
                         transaction.replace(R.id.profile_navbar_layout,historyFragment())
                         transaction.addToBackStack(null)
                         transaction.commit()
@@ -89,7 +89,7 @@ class Profile : AppCompatActivity() {
                     }
 
                     R.id.editprofileicon -> {
-                        var transaction = supportFragmentManager.beginTransaction()
+                        val transaction = supportFragmentManager.beginTransaction()
                         transaction.replace(R.id.profile_navbar_layout,editprofileFragment())
                         transaction.addToBackStack(null)
                         transaction.commit()
