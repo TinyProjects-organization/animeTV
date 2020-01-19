@@ -12,9 +12,6 @@ import android.widget.Toast
 import com.coders.animetv.Homescreen.HomeScreen
 import com.coders.animetv.Models.Users
 import com.coders.animetv.R
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_login.*
@@ -31,21 +28,23 @@ class Login : AppCompatActivity() {
         // kullanıcı giriş yapmış ve çıkış yapmadıysa otomatik giriş gibi işlemler
         firebaseAuthListener()
 
-        // basit şifre gösterme watcher gibi işlemler var
-        init()
-
-        // giriş yapma işlemleri var
-        firebaseLogin()
-
         // firebase tanımlamarı atama  kısmı //
         mAuth = FirebaseAuth.getInstance()
         mRef = FirebaseDatabase.getInstance().reference
         // firebase tanımlamarı atama  kısmı son //
 
+        // basit şifre gösterme watcher gibi işlemler var
+        init()
+
+        // giriş yapma işlemleri var
+        loginViaFirebase()
+
+
+
     }
 
     // Firebase giriş ekranındaki giriş işlemleri kısmı //
-    private fun firebaseLogin() {
+    private fun loginViaFirebase() {
         signinBtn.setOnClickListener {
             dBLoginInfoCheck(
                 usernameInput.text.toString(),
@@ -212,6 +211,7 @@ class Login : AppCompatActivity() {
         super.onStart()
         mAuth.addAuthStateListener(mAuthListener)
     }
+
     override fun onStop() {
         super.onStop()
         mAuth.removeAuthStateListener(mAuthListener)

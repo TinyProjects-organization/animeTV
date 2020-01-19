@@ -12,6 +12,7 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.coders.animetv.Homescreen.HomeScreen
+import com.coders.animetv.Models.UserDetails
 import com.coders.animetv.Models.Users
 import com.coders.animetv.R
 import com.google.firebase.auth.FirebaseAuth
@@ -209,15 +210,18 @@ class Register : AppCompatActivity() {
                                 .addOnCompleteListener { t1 ->
                                     if (t1.isComplete) {
                                         val userId = mAuth.currentUser!!.uid
-
+                                        /** UsersDetail Classı  */
+                                        val profilePic = UserDetails("")
                                         //oturum açan kullanıcının verilerini DB ye kaydetme //
+                                        /** Users Classı */
                                         val kaydedilicekKullanici =
                                             Users(
                                                 email,
                                                 password,
                                                 userNickname,
                                                 userId,
-                                                currentTimeString
+                                                currentTimeString,
+                                                profilePic
                                             )
                                         // DB oluşturma ağacı ////////
                                         mRef.child("users").child("typeC").child(userId)

@@ -23,7 +23,6 @@ class HomeScreen : AppCompatActivity() {
     lateinit var mAuth: FirebaseAuth
     lateinit var mRef: DatabaseReference
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_homescreen)

@@ -5,13 +5,15 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import com.coders.animetv.Login.Login
+import com.coders.animetv.Models.Users
 import com.coders.animetv.R
 import com.coders.animetv.Utilz.BottomNavigationViewManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_profile.*
 
 class Profile : AppCompatActivity() {
@@ -20,6 +22,9 @@ class Profile : AppCompatActivity() {
     lateinit var mAuth: FirebaseAuth
     lateinit var mRef: DatabaseReference
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
+    //kişi bilgileri çekileceği için hep elimizde tutalım
+    lateinit var mUser: FirebaseUser
+
 
     // hangisinde olduğunu göstermek için //
     private val ACTIVITY_NUMBER = 2
@@ -29,37 +34,77 @@ class Profile : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
+
+
         //hesaba giriş yapılmış mı yapılmamış mı diye
         firebaseAuthListener()
+
+        // firebase tanımlamarı atama  kısmı //
+        mAuth = FirebaseAuth.getInstance()
+        mRef = FirebaseDatabase.getInstance().reference
+        mUser = mAuth.currentUser!!
+        // firebase tanımlamarı atama  kısmı son //
 
         // navigation oluşturma fonksiyonu
         setupNavigationView()
 
         //çıkış yap gibi işlemler
-        init()
+        signOutFunc()
+
+        //Üst kısımdaki kulanıcı bilgilerini getirme
+        bringUserInfo()
 
         //Profile page Navigation view kısmı
         setupProfileNavigationView()
 
-        // firebase tanımlamarı atama  kısmı //
-        mAuth = FirebaseAuth.getInstance()
-        mRef = FirebaseDatabase.getInstance().reference
-        // firebase tanımlamarı atama  kısmı son //
+
 
     }
 
-    private fun init() {
+    //profile sayfasının üst kısmının firebase  //
+    private fun bringUserInfo() {
+        mRef.child("users").child("typeC").child(mUser.uid)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+
+                }
+                override fun onDataChange(p0: DataSnapshot) {
+
+                        if (p0.value != null) {
+                            //Firebaseden verilerin tamamnın //
+                            val readUser = p0.getValue(Users::class.java)
+                            //Firebaseden verilerin tamamnın SON//
+
+                            userNameProfile.text = readUser!!.user_nickname
+                            userEmail.text = readUser.user_email
+                            //BUraya birde resim çekme eklenicek sonra CAN NASIF//
+                        }else{
+                            Toast.makeText(applicationContext,"Null veriyor "+mUser.uid,Toast.LENGTH_LONG).show()
+                        }
+                }
+            })
+
+    }
+    //profile sayfasının üst kısmının firebase SON //
+
+    private fun signOutFunc() {
+        //oturumunun kapatma kodu //
         cikisYap.setOnClickListener {
             val dialog = SignOutFragment()
-            dialog.show(supportFragmentManager,"çıkış yapılsın mı sorusu")
+            dialog.show(supportFragmentManager, "çıkış yapılsın mı sorusu")
         }
+        //oturumunun kapatma kodu SON//
     }
 
 
     // bottom navigation view çalıştırma fonksiyonu //
     private fun setupNavigationView() {
         BottomNavigationViewManager.setupBottomNavigationView(bottomNavigationViewProfile)
-        BottomNavigationViewManager.setupNavigation(this, bottomNavigationViewProfile,ACTIVITY_NUMBER)
+        BottomNavigationViewManager.setupNavigation(
+            this,
+            bottomNavigationViewProfile,
+            ACTIVITY_NUMBER
+        )
         val menu = bottomNavigationViewProfile.menu
         val menuItem = menu.getItem(ACTIVITY_NUMBER)
         menuItem.isChecked = true
@@ -68,42 +113,42 @@ class Profile : AppCompatActivity() {
     /// bottom navigation view çalıştırma fonksiyonu sonu //
 
     // Profile navigation view işlemleri   //
-   private fun setupProfileNavigationView() {
+    private fun setupProfileNavigationView() {
         BottomNavigationViewManager.setupBottomNavigationView(profile_navigation)
-        profile_navigation.onNavigationItemSelectedListener = object : BottomNavigationView.OnNavigationItemSelectedListener{
-            override fun onNavigationItemSelected(p0: MenuItem): Boolean {
-                when (p0.itemId) {
-                    R.id.favoriteicon -> {
-                        val transaction = supportFragmentManager.beginTransaction()
-                        transaction.replace(R.id.profile_navbar_layout,favoriteFragment())
-                        transaction.addToBackStack(null)
-                        transaction.commit()
-                        return true
-                    }
-                    R.id.historyicon -> {
-                        val transaction = supportFragmentManager.beginTransaction()
-                        transaction.replace(R.id.profile_navbar_layout,historyFragment())
-                        transaction.addToBackStack(null)
-                        transaction.commit()
-                        return true
+        profile_navigation.onNavigationItemSelectedListener =
+            object : BottomNavigationView.OnNavigationItemSelectedListener {
+                override fun onNavigationItemSelected(p0: MenuItem): Boolean {
+                    when (p0.itemId) {
+                        R.id.favoriteicon -> {
+                            val transaction = supportFragmentManager.beginTransaction()
+                            transaction.replace(R.id.profile_navbar_layout, favoriteFragment())
+                            transaction.addToBackStack(null)
+                            transaction.commit()
+                            return true
+                        }
+                        R.id.historyicon -> {
+                            val transaction = supportFragmentManager.beginTransaction()
+                            transaction.replace(R.id.profile_navbar_layout, historyFragment())
+                            transaction.addToBackStack(null)
+                            transaction.commit()
+                            return true
+                        }
+
+                        R.id.editprofileicon -> {
+                            val transaction = supportFragmentManager.beginTransaction()
+                            transaction.replace(R.id.profile_navbar_layout, editprofileFragment())
+                            transaction.addToBackStack(null)
+                            transaction.commit()
+                            return true
+                        }
                     }
 
-                    R.id.editprofileicon -> {
-                        val transaction = supportFragmentManager.beginTransaction()
-                        transaction.replace(R.id.profile_navbar_layout,editprofileFragment())
-                        transaction.addToBackStack(null)
-                        transaction.commit()
-                        return true
-                    }
+                    return false
                 }
 
-                return false
             }
-
-        }
     }
     /// profile navigation view işlemleri sonu //
-
 
 
     // kullanıcı giriş yapmış ve çıkış yapmadıysa otomatik giriş gibi işlemler //
@@ -133,6 +178,7 @@ class Profile : AppCompatActivity() {
         super.onStart()
         mAuth.addAuthStateListener(mAuthListener)
     }
+
     override fun onStop() {
         super.onStop()
         mAuth.removeAuthStateListener(mAuthListener)
