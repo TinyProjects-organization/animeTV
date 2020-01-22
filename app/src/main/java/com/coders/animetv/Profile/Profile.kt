@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.core.net.toUri
 import com.coders.animetv.Login.Login
 import com.coders.animetv.Models.Users
 import com.coders.animetv.R
@@ -77,9 +78,15 @@ class Profile : AppCompatActivity() {
 
                             userNameProfile.text = readUser!!.user_nickname
                             userEmail.text = readUser.user_email
-                            //BUraya birde resim çekme eklenicek sonra CAN NASIF//
-                        }else{
-                            Toast.makeText(applicationContext,"Null veriyor "+mUser.uid,Toast.LENGTH_LONG).show()
+                            //Buraya birde resim çekme eklenicek sonra //
+
+                            if (readUser.user_detail!!.profile_pic !=null) {
+                                val toUri = readUser.user_detail!!.profile_pic!!.toUri()
+                                imageViewProfile.setImageURI(toUri)
+                            }else{
+                              //buraya resmi yok ise eklenicek resmi düzenleme
+                                //  imageViewProfile.setImageURI()
+                            }
                         }
                 }
             })
