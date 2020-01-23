@@ -41,13 +41,17 @@ class EMailKodragment : Fragment() {
         return view
     }
 
+
     // gelen e maili sonraki sayfada alma //
+    /*
     @Subscribe(sticky = true)
     internal fun eMailEvent(emailkodu: EventBusData.EMailGonder) {
         email = emailkodu.email
         Log.e("Can", "email" + email)
 
     }
+
+     */
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

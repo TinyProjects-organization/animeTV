@@ -2,7 +2,6 @@ package com.coders.animetv.Profile
 
 
 import android.app.Activity
-import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -22,12 +21,10 @@ import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
-import kotlinx.android.synthetic.main.fragment_editprofile.*
 import kotlinx.android.synthetic.main.fragment_editprofile.view.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import java.lang.Exception
-import java.net.URI
 
 /**
  * A simple [Fragment] subclass.
@@ -68,10 +65,10 @@ class editprofileFragment : Fragment() {
     // kaydet tuşuna basınca verileri kaydetme DB ye update işlemi //
     private fun saveChanges(view: View?) {
         view!!.button2.setOnClickListener {
-            var profilGuncellendiMi = false
             //kullanici ismi var mı diye bakar eğer yok ise kaydeder var ise hata mesajı çıkarır //
+
             if (!gelenKullanici.user_nickname.equals(view.changeUsernameInput.text.toString()))
-                mDatabase.child("user").child("typeC").addListenerForSingleValueEvent(object :
+                mDatabase.child("users").child("typeC").addListenerForSingleValueEvent(object :
                     ValueEventListener {
                     override fun onCancelled(p0: DatabaseError) {
 
@@ -98,7 +95,6 @@ class editprofileFragment : Fragment() {
                             mDatabase.child("users").child("typeC").child(gelenKullanici.user_id!!)
                                 .child("user_nickname")
                                 .setValue(view.changeUsernameInput.text.toString())
-                            profilGuncellendiMi = true
                         }
                     }
                 })
@@ -107,15 +103,19 @@ class editprofileFragment : Fragment() {
             //Resim Ekleme KIsmı //
             if (profileResimUri != null) {
                 // resim büyük gelirse progress bar firebase den //
-
+                val dialogYukleniyor = PicUplaodingFragment()
+                dialogYukleniyor.show(activity!!.supportFragmentManager,"Yukleniyor Fragmenti")
                 // resim büyük gelirse progress bar firebase den SON//
 
-                // resmi firebase storageye yükleme kısmı
-                var uploadTask = mStorageRef.child("users")
-                    .child(gelenKullanici.user_id!!).putFile(profileResimUri!!)
+                // resmi firebase storageye yükleme kısmı path
+                 mStorageRef.child("ProfilePics")
+                    .child(gelenKullanici.user_id!!).child(profileResimUri!!.lastPathSegment!!).putFile(profileResimUri!!)
                     // başarılı olursa buraya gelicek
                     .addOnCompleteListener(object : OnCompleteListener<UploadTask.TaskSnapshot> {
                         override fun onComplete(p0: Task<UploadTask.TaskSnapshot>) {
+                            if (p0.isSuccessful) {
+                                dialogYukleniyor.dismiss()
+                            }
 
                         }
 
@@ -128,22 +128,17 @@ class editprofileFragment : Fragment() {
 
                     })
             }
-            //Resim Ekleme KIsmı SON//
+            //Resim Ekleme KIsmı path SON//
 
-            //Eğer herhangi bir güncelleme yapar ise //
-            if (profilGuncellendiMi) {
-                Toast.makeText(activity, "Profil bilgileri güncellendi", Toast.LENGTH_LONG).show()
-            }
-            //Eğer herhangi bir güncelleme yapar ise  SON//
         }
     }
     // kaydet tuşuna basınca verileri kaydetme DB ye update işlemi SON//
 
     // galeriden resim seçmesini sağlıyor //
     private fun changeProfilePicBtn(view: View?) {
-        view!!.profilResminiDegistir.setOnClickListener {
+        view!!.editProfilePic.setOnClickListener {
             val intent = Intent()
-            intent.type = "images/"
+            intent.type = "image/*"
             intent.action = Intent.ACTION_PICK
             startActivityForResult(intent, resimSec)
         }

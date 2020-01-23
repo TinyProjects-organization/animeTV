@@ -239,10 +239,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.455"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profilResminiDegistir" />
+            app:layout_constraintTop_toBottomOf="@+id/editProfilePic" />
 
         <TextView
-            android:id="@+id/profilResminiDegistir"
+            android:id="@+id/editProfilePic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
