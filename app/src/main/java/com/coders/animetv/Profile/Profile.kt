@@ -11,11 +11,13 @@ import com.coders.animetv.Login.Login
 import com.coders.animetv.Models.Users
 import com.coders.animetv.R
 import com.coders.animetv.Utilz.BottomNavigationViewManager
+import com.coders.animetv.Utilz.EventBusData
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_profile.*
+import org.greenrobot.eventbus.EventBus
 
 class Profile : AppCompatActivity() {
 
@@ -65,7 +67,7 @@ class Profile : AppCompatActivity() {
     //profile sayfasının üst kısmının firebase  //
     private fun bringUserInfo() {
         mRef.child("users").child("typeC").child(mUser.uid)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
+            .addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
 
                 }
@@ -75,6 +77,10 @@ class Profile : AppCompatActivity() {
                             //Firebaseden verilerin tamamnın //
                             val readUser = p0.getValue(Users::class.java)
                             //Firebaseden verilerin tamamnın SON//
+
+                            //Firebase den gelen veriyi eventbus ile gerekli sayfalara gönderme //
+                            EventBus.getDefault().postSticky(EventBusData.kullaniciBilgileriniGonder(readUser))
+                            //Firebase den gelen veriyi eventbus ile gerekli sayfalara gönderme SON//
 
                             userNameProfile.text = readUser!!.user_nickname
                             userEmail.text = readUser.user_email

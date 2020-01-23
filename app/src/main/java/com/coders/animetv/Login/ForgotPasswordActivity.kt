@@ -7,15 +7,33 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import com.coders.animetv.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_forgot_password.*
 
 class ForgotPasswordActivity : AppCompatActivity() {
+    // firebase kısmı tanımlama
+    lateinit var mAuth: FirebaseAuth
+    lateinit var mRef: DatabaseReference
+    lateinit var mAuthListener: FirebaseAuth.AuthStateListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forgot_password)
+
+        // firebase tanımlamarı atama  kısmı //
+        mAuth = FirebaseAuth.getInstance()
+        mRef = FirebaseDatabase.getInstance().reference
+        // firebase tanımlamarı atama  kısmı son //
+
+        // basit watcher olayları
         init()
+
+
     }
+
+
 
     private fun init() {
         // Forget pass sayfasından login sayfasına intent  //
