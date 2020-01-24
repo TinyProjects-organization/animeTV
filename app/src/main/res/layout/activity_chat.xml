@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Chat.Chat">
+    tools:context=".Chat.Chat"
+    android:background="@drawable/chatbackground">
 
 
     <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
