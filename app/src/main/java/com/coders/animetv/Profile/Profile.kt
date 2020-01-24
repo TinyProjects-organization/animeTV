@@ -2,8 +2,10 @@ package com.coders.animetv.Profile
 
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.core.net.toUri
@@ -82,12 +84,14 @@ class Profile : AppCompatActivity() {
                             EventBus.getDefault().postSticky(EventBusData.kullaniciBilgileriniGonder(readUser))
                             //Firebase den gelen veriyi eventbus ile gerekli sayfalara gönderme SON//
 
+
                             userNameProfile.text = readUser!!.user_nickname
                             userEmail.text = readUser.user_email
                             //Buraya birde resim çekme eklenicek sonra //
 
                             if (readUser.user_detail!!.profile_pic !=null) {
                                 val toUri = readUser.user_detail!!.profile_pic!!.toUri()
+
                                 imageViewProfile.setImageURI(toUri)
                             }else{
                               //buraya resmi yok ise eklenicek resmi düzenleme

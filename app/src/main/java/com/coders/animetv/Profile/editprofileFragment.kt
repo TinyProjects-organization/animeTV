@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import com.coders.animetv.R
 import com.coders.animetv.Utilz.EventBusData
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
@@ -24,12 +26,12 @@ import com.google.firebase.storage.UploadTask
 import kotlinx.android.synthetic.main.fragment_editprofile.view.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
-import java.lang.Exception
 
 /**
  * A simple [Fragment] subclass.
  */
 class editprofileFragment : Fragment() {
+
     lateinit var gelenKullanici: Users
     // rasgele bir sayı oluşturuyor resim seçme için
     val resimSec = 100
@@ -38,7 +40,7 @@ class editprofileFragment : Fragment() {
     lateinit var mStorageRef: StorageReference
 
     // Eklnen resmi kaydeyme
-    var profileResimUri: Uri? = null
+    var profilePhotoUri: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -101,37 +103,44 @@ class editprofileFragment : Fragment() {
             //kullanici ismi var mı diye bakar eğer yok ise kaydeder var ise hata mesajı çıkarır SON //
 
             //Resim Ekleme KIsmı //
-            if (profileResimUri != null) {
+            if (profilePhotoUri != null) {
+
                 // resim büyük gelirse progress bar firebase den //
                 val dialogYukleniyor = PicUplaodingFragment()
-                dialogYukleniyor.show(activity!!.supportFragmentManager,"Yukleniyor Fragmenti")
+                dialogYukleniyor.show(activity!!.supportFragmentManager, "Yukleniyor Fragmenti")
                 // resim büyük gelirse progress bar firebase den SON//
 
-                // resmi firebase storageye yükleme kısmı path
-                 mStorageRef.child("ProfilePics")
-                    .child(gelenKullanici.user_id!!).child(profileResimUri!!.lastPathSegment!!).putFile(profileResimUri!!)
-                    // başarılı olursa buraya gelicek
+                // resmi firebase storageye yükleme kısmı path  //
+                val ref = mStorageRef.child("ProfilePics")
+                    .child(gelenKullanici.user_id!!).child(profilePhotoUri!!.lastPathSegment!!)
+                ref.putFile(profilePhotoUri!!)
                     .addOnCompleteListener(object : OnCompleteListener<UploadTask.TaskSnapshot> {
                         override fun onComplete(p0: Task<UploadTask.TaskSnapshot>) {
-                            if (p0.isSuccessful) {
+                            //yazdığı pat url yazarsa kısmı
+                            ref.downloadUrl.addOnSuccessListener { p0 ->
+                                // url i DB deki path e yazar  //
+                                Log.e("uri geldi mi", p0.toString())
+                                mDatabase.child("users")
+                                    .child("typeC")
+                                    .child(gelenKullanici.user_id!!)
+                                    .child("user_detail")
+                                    .child("profile_pic")
+                                    .setValue(p0.toString())
+                                // url i DB deki path e yazar  SON//
+
+                                //yüklenince dialogu kapatır //
                                 dialogYukleniyor.dismiss()
+                                //yüklenince dialogu kapatır SON//
                             }
-
                         }
 
                     })
-                    //hata olursa burası çalışcak
-                    .addOnFailureListener(object : OnFailureListener {
-                        override fun onFailure(p0: Exception) {
-
-                        }
-
-                    })
+                // resmi firebase storageye yükleme kısmı path  //
             }
-            //Resim Ekleme KIsmı path SON//
-
         }
     }
+    //Resim Ekleme KIsmı path SON//
+
     // kaydet tuşuna basınca verileri kaydetme DB ye update işlemi SON//
 
     // galeriden resim seçmesini sağlıyor //
@@ -149,7 +158,7 @@ class editprofileFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == resimSec && resultCode == Activity.RESULT_OK && data?.data != null) {
-            profileResimUri = data.data
+            profilePhotoUri = data.data
         }
     }
     //galeriden seçilen resim bir result yani sonuç döndürüyor o sonuç kısmı SON//
