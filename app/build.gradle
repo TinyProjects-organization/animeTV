@@ -62,5 +62,10 @@ dependencies {
 
     implementation 'androidx.core:core-ktx:1.1.0'
 
+    //circle imageview https://github.com/hdodenhof/CircleImageView
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    //Image Loader https://github.com/nostra13/Android-Universal-Image-Loader
+    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
 
 }

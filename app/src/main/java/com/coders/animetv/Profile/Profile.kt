@@ -14,10 +14,12 @@ import com.coders.animetv.Models.Users
 import com.coders.animetv.R
 import com.coders.animetv.Utilz.BottomNavigationViewManager
 import com.coders.animetv.Utilz.EventBusData
+import com.coders.animetv.Utilz.UniversalImageLoader
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import com.nostra13.universalimageloader.core.ImageLoader
 import kotlinx.android.synthetic.main.activity_profile.*
 import org.greenrobot.eventbus.EventBus
 
@@ -39,6 +41,9 @@ class Profile : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
+
+        //UniversalImageLoader Tanımlama
+        initimageloader()
 
 
         //hesaba giriş yapılmış mı yapılmamış mı diye
@@ -65,6 +70,13 @@ class Profile : AppCompatActivity() {
 
 
     }
+    //UniversalImageLoader Tanımlama
+    private fun initimageloader() {
+        var universalImageLoader = UniversalImageLoader(this)
+        ImageLoader.getInstance().init(universalImageLoader.config)
+    }
+    //UniversalImageLoader Tanımlama Son
+
 
     //profile sayfasının üst kısmının firebase  //
     private fun bringUserInfo() {
@@ -89,14 +101,9 @@ class Profile : AppCompatActivity() {
                             userEmail.text = readUser.user_email
                             //Buraya birde resim çekme eklenicek sonra //
 
-                            if (readUser.user_detail!!.profile_pic !=null) {
-                                val toUri = readUser.user_detail!!.profile_pic!!.toUri()
+                            var imgUrl: String =readUser.user_detail!!.profile_pic!!
+                            UniversalImageLoader.setImage(imgUrl,imageViewProfile,null,"")
 
-                                imageViewProfile.setImageURI(toUri)
-                            }else{
-                              //buraya resmi yok ise eklenicek resmi düzenleme
-                                //  imageViewProfile.setImageURI()
-                            }
                         }
                 }
             })
