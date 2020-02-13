@@ -97,6 +97,8 @@ class editprofileFragment : Fragment() {
                             mDatabase.child("users").child("typeC").child(gelenKullanici.user_id!!)
                                 .child("user_nickname")
                                 .setValue(view.changeUsernameInput.text.toString())
+                            Toast.makeText(context,"Verileriniz başarıyla güncellendi",Toast.LENGTH_LONG).show()
+
                         }
                     }
                 })
@@ -127,6 +129,10 @@ class editprofileFragment : Fragment() {
                                     .child("profile_pic")
                                     .setValue(p0.toString())
                                 // url i DB deki path e yazar  SON//
+
+
+                                Toast.makeText(context,"Verileriniz başarıyla güncellendi",Toast.LENGTH_LONG).show()
+
 
                                 //yüklenince dialogu kapatır //
                                 dialogYukleniyor.dismiss()
